@@ -1,4 +1,5 @@
 %% HBnB - 3 Layer Architecture with Facade
+```mermaid
 classDiagram
     %% --- Packages ---
     class PresentationLayer {
@@ -25,3 +26,4 @@ classDiagram
     %% --- Relations ---
     PresentationLayer --> BusinessLogicLayer : via Facade
     BusinessLogicLayer --> PersistenceLayer : Database Operations
+```
