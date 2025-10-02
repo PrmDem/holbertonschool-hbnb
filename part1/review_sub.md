@@ -5,10 +5,10 @@ participant API
 participant BusinessLogic
 participant Database
 
-User->>API: API Call (Submit Review)
-API->>BusinessLogic: Validate and Process Request
-BusinessLogic->>Database: Save Review component
+User->>API: POST - API Call (Submit Review)
+API->>BusinessLogic: POST - Validate and Process Request
+BusinessLogic->>Database: POST - Save Review component
 Database-->>BusinessLogic: Confirm Save
 BusinessLogic-->>API: Return Validation
-API-->>User: Return Success/Failure
+API-->>User: GET - Return Success (201) / Failure (400)
 ```
