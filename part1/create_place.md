@@ -5,10 +5,11 @@ participant API
 participant BusinessLogic
 participant Database
 
-User->>API: API Call (Create Place)
-API->>BusinessLogic: Validate and Process Request
-BusinessLogic->>Database: Save Place component
+User->>API: POST - API Call (Create Place)
+API->>BusinessLogic: POST - Validate and Process Request
+BusinessLogic->>Database: POST - Save Place components
 Database-->>BusinessLogic: Confirm Save
+Database-->>BusinessLogic: Return Amenities
 BusinessLogic-->>API: Return Validation
-API-->>User: Return Success/Failure
+API-->>User: GET - Return Success (201) / Failure (400)
 ```
