@@ -10,19 +10,27 @@ amenity_model = api.model('Amenity', {
 
 @api.route('/')
 class AmenityList(Resource):
-    @api.expect(amenity_model)
+    @api.expect(amenity_model, validation=True)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new amenity"""
-        # Placeholder for the logic to register a new amenity
-        pass
+        amenity_data = api.payload
+        new_amenity = facade.create_amenity(amenity_data)
+        return {'id': new_amenity.id, 'name': new_amenity.name}, 201
 
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
         """Retrieve a list of all amenities"""
-        # Placeholder for logic to return a list of all amenities
-        pass
+        all_amenities = facade.get_all_amenities()
+        amenities_list = []
+        for amenity in all_amenities:
+            amenities_list.append({
+                "id": amenity.id,
+                "name": amenity.name
+            })
+        return amenities_list, 200
+
 
 @api.route('/<amenity_id>')
 class AmenityResource(Resource):
@@ -30,14 +38,20 @@ class AmenityResource(Resource):
     @api.response(404, 'Amenity not found')
     def get(self, amenity_id):
         """Get amenity details by ID"""
-        # Placeholder for the logic to retrieve an amenity by ID
-        pass
+        amenity = facade.get_amenity(amenity_id)
+        if not amenity:
+            return {"Error": "Bad Request"}, 404
+        return {"id": amenity.id, "name": amenity.name}, 200
 
-    @api.expect(amenity_model)
+    @api.expect(amenity_model, validate=True)
     @api.response(200, 'Amenity updated successfully')
     @api.response(404, 'Amenity not found')
     @api.response(400, 'Invalid input data')
     def put(self, amenity_id):
         """Update an amenity's information"""
-        # Placeholder for the logic to update an amenity by ID
-        pass
+        amenity_put = facade.get_amenity(amenity_id)
+        if not amenity_put:
+            return {"Error": "Not Found"}, 404
+        amenity_data = api.payload
+        amenity_put.name = amenity_data.get('name', amenity_put.name)
+        return {"message": "Amenity updated successfully"}, 200
