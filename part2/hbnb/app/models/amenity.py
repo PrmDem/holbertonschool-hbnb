@@ -8,11 +8,11 @@ class Amenity(BaseModel):
 
     @property
     def name(self):
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, v_name):
         if v_name and len(v_name) <= 50:
-            self._name = v_name
+            self.__name = v_name
         else:
             raise ValueError("Name must be between 1 and 50 characters")

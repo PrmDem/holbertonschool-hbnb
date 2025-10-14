@@ -54,4 +54,4 @@ class AmenityResource(Resource):
             return {"Error": "Not Found"}, 404
         amenity_data = api.payload
         amenity_put.name = amenity_data.get('name', amenity_put.name)
-        return {'id': amenity_put.id, 'name': amenity_put.name}, 200
+        return {"message": "Amenity updated successfully"}, 200
