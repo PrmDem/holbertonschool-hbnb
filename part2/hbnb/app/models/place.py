@@ -3,14 +3,14 @@ from app.services import facade
 
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
         self.title = title
         self.description = description
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
-        self.owner_id = owner
+        self.owner_id = owner_id
         self.reviews = []
         self.amenities = []
 
@@ -69,11 +69,10 @@ class Place(BaseModel):
     @owner_id.setter
     def owner_id(self, value):
         try:
-            place_owner = facade.get_user(value.id)
-            if place_owner:
-                self.__owner_id = place_owner
+            self.__owner_id = value
+
         except Exception as e:
-            return {"Error": f"{str(e)}"}, 400
+            raise ValueError(f"Invalid owner_id: {str(e)}")
 
     def add_review(self, review):
         """Add a review to the place."""
