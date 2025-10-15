@@ -30,9 +30,7 @@ class ReviewList(Resource):
         reviews = [{
             "id": r.id,
             "text": r.text,
-            "rating": r.rating,
-            "user_id": r.user_id,
-            "place_id": r.place_id
+            "rating": r.rating
         } for r in all_review]
         return reviews, 200
 
