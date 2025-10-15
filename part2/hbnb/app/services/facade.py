@@ -32,7 +32,7 @@ class HBnBFacade:
         """
         update user with put
         """
-        return self.user_repo.update(user_id, **user_obj)
+        return self.user_repo.update(user_id, user_obj)
 
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
@@ -46,7 +46,7 @@ class HBnBFacade:
         return self.amenity_repo.get_all()
 
     def update_amenity(self, amenity_id, amenity_data):
-        return self.amenity_repo.update(amenity_id, **amenity_data)
+        return self.amenity_repo.update(amenity_id, amenity_data)
 
     def create_place(self, place_data):
         place = Place(**place_data)
@@ -60,4 +60,4 @@ class HBnBFacade:
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        return self.place_repo.update(place_id, **place_data)
+        return self.place_repo.update(place_id, place_data)
