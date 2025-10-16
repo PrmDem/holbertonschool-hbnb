@@ -15,11 +15,9 @@ class Review(BaseModel):
 
     @text.setter
     def text(self, value):
-        try:
-            if value != "":
-                self.__text = value
-        except Exception as e:
-            return {"Error": f"{str(e)}"}, 404
+        if not value:
+            raise ValueError("Text cannot be empty")
+        self.__text = value
 
     @property
     def rating(self):
@@ -27,11 +25,9 @@ class Review(BaseModel):
 
     @rating.setter
     def rating(self, value):
-        try:
-            if 0 < value < 6:
-                self.__rating = value
-        except Exception as e:
-            return {"Value Error": f"{str(e)}"}, 404
+        if not (0 < value < 6):
+            raise ValueError("Rating must be between 1 and 5")
+        self.__rating = value
 
     @property
     def place(self):
@@ -39,12 +35,12 @@ class Review(BaseModel):
 
     @place.setter
     def place(self, value):
-        try:
-            place_value = facade.get_place(value.id)
-            if place_value:
-                self.__place = place_value
-        except Exception as e:
-            return {"Value Error": f"{str(e)}"}, 404
+        if not value:
+            raise ValueError("Place ID cannot be empty")
+        place_value = facade.get_place(value)
+        if not place_value:
+            raise ValueError(f"Place with ID {value} not found")
+        self.__place = place_value
 
     @property
     def user(self):
@@ -52,9 +48,9 @@ class Review(BaseModel):
 
     @user.setter
     def user(self, value):
-        try:
-            user_value = facade.get_user(value.id)
-            if user_value:
-                self.__user = user_value
-        except Exception as e:
-            return {"Error": f"{str(e)}"}, 404
+        if not value:
+            raise ValueError("User ID cannot be empty")
+        user_value = facade.get_user(value)
+        if not user_value:
+            raise ValueError(f"User with ID {value} not found")
+        self.__user = user_value

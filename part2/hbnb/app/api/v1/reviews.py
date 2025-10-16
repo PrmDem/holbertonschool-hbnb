@@ -18,21 +18,33 @@ class ReviewList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new review"""
-        review_data = api.payload
-        new_review = facade.create_review(review_data)
-        return {'id': new_review.id, 'text': new_review.text}, 201
+        try:
+            review_data = api.payload
+            new_review = facade.create_review(review_data)
+            return {
+                'id': new_review.id, 
+                'text': new_review.text, 
+                'rating': new_review.rating,
+                'user_id': new_review.user_id,
+                'place_id': new_review.place_id,
+            }, 201
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
-        all_review = facade.get_all_reviews()
-        reviews = [{
-            "id": r.id,
-            "text": r.text,
-            "rating": r.rating
-        } for r in all_review]
-        return reviews, 200
+        try:
+            all_review = facade.get_all_reviews()
+            reviews = [{
+                "id": r.id,
+                "text": r.text,
+                "rating": r.rating
+            } for r in all_review]
+            return reviews, 200
+        except Exception as e:
+            return {"error": f"Review not found: {str(e)}"}, 404
 
 @api.route('/<review_id>')
 class ReviewResource(Resource):
@@ -67,6 +79,7 @@ class ReviewResource(Resource):
             review_put.user_id = review_data.get('user_id', review_put.user_id)
             review_put.place_id = review_data.get('place_id', review_put.place_id)
             return {"message": "Review updated successfully"}, 200
+
         except Exception as e:
             return {"error": f"Review not found: {str(e)}"}, 404
 
@@ -88,13 +101,16 @@ class PlaceReviewList(Resource):
     def get(self, place_id):
         """Get all reviews for a specific place"""
         try:
+
+            place = facade.get_place(place_id)
+            if not place:
+                return {"error": "Place not found"}, 404
+            
             review = facade.get_reviews_by_place(place_id)
             reviews = [{
                 "id": r.id,
                 "text": r.text,
-                "rating": r.rating,
-                "user_id": r.user_id,
-                "place_id": r.place_id
+                "rating": r.rating
             } for r in review]
             return reviews, 200
         except Exception as e:
