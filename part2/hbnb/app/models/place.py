@@ -70,9 +70,8 @@ class Place(BaseModel):
     def owner_id(self, value):
         try:
             self.__owner_id = value
-
-        except Exception as e:
-            raise ValueError(f"Invalid owner_id: {str(e)}")
+        except ValueError:
+            return {"ValueError": "Invalid user ID"}
 
     def add_review(self, review):
         """Add a review to the place."""
