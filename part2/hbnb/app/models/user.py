@@ -52,11 +52,11 @@ class User(BaseModel):
 
     @email.setter
     def email(self, value):
-        try:
-            if re.fullmatch(regex, value):
-               self.__email = value
-        except ValueError:
+        if not value:
+            raise ValueError("Email can t be empty")
+        if not re.fullmatch(regex, value):
             raise ValueError("Invalid email format")
+        self.__email = value
 
     def owned_places(self, place):
         """Add an owned place to the user"""

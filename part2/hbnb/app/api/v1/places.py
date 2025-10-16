@@ -51,30 +51,25 @@ class PlaceList(Resource):
                 'price': new_place.price,
                 'latitude': new_place.latitude,
                 'longitude': new_place.longitude,
-                'owner_id': new_place.owner_id,
-                'amenities': new_place.amenities,
-                'reviews': new_place.reviews
+                'owner_id': new_place.owner_id
             }, 201
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        try:
-            places = facade.get_all_places()
-            all_places = [{
-                'id': place.id,
-                'title': place.title,
-                'description': place.description,
-                'price': place.price,
-                'latitude': place.latitude,
-                'longitude': place.longitude,
-                'owner_id': place.owner_id,
-                'amenities': place.amenities,
-                'reviews': place.reviews
-            } for place in places]
-            return all_places, 200
-        except Exception as e:
-            return {"Error": f"{str(e)}"}, 404
+        #try:
+        #.....................
+        #revoir tous l affichage comme demandé
+        places = facade.get_all_places()
+        all_places = [{
+            'id': place.id,
+            'title': place.title,
+            'latitude': place.latitude,
+            'longitude': place.longitude,
+        } for place in places]
+        return all_places, 200
+        #except Exception as e:
+        #return {"Error": f"{str(e)}"}, 404
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):

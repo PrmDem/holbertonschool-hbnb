@@ -94,12 +94,12 @@ class ReviewResource(Resource):
         """Delete a review"""
         try:
             review = facade.get_review(review_id)
-            if review_id not in facade.get_review(review_id):
+            if not review:
                 return {"error": "review does not exist."}, 404
-            facade.delete_review(review_id)
-            return {"message": "Review deleted successfully"}, 200
         except Exception as e:
             return {"error": f"Not Found: {str(e)}"}, 404
+        facade.delete_review(review_id)
+        return {"message": "Review deleted successfully"}, 200
 
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):
