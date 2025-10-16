@@ -21,6 +21,11 @@ class ReviewList(Resource):
         try:
             review_data = api.payload
             new_review = facade.create_review(review_data)
+            if not new_review.user_id:
+                return {"error": "user id must not be empty"}, 400
+            if not new_review.place_id:
+                return {"error": "place id must not be empty"}, 400
+
             return {
                 'id': new_review.id, 
                 'text': new_review.text, 
@@ -89,10 +94,12 @@ class ReviewResource(Resource):
         """Delete a review"""
         try:
             review = facade.get_review(review_id)
-            facade.delete_review(review_id)
-            return {"message": "Review deleted successfully"}, 200
+            if not review:
+                return {"error": "review does not exist."}, 404
         except Exception as e:
             return {"error": f"Not Found: {str(e)}"}, 404
+        facade.delete_review(review_id)
+        return {"message": "Review deleted successfully"}, 200
 
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):
