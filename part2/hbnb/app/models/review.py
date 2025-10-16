@@ -48,7 +48,7 @@ class Review(BaseModel):
 
     @user.setter
     def user(self, value):
-        if not value:
+        if not value or value is "":
             raise ValueError("User ID cannot be empty")
         user_value = facade.get_user(value)
         if not user_value:
