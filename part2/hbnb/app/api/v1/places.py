@@ -108,6 +108,13 @@ class PlaceResource(Resource):
             place_put = facade.get_place(place_id)
             place_data = api.payload
             place_put.title = place_data.get('title', place_put.title)
+            place_put.description = place_data.get('description', place_put.description)
+            place_put.price = place_data.get('price', place_put.price)
+            place_put.latitude = place_data.get('latitude', place_put.latitude)
+            place_put.longitude = place_data.get('longitude', place_put.longitude)
+            place_put.owner_id = place_data.get('owner_id', place_put.owner_id)
+            place_put.amenities = place_data.get('amenities', place_put.amenities)
+            place_put.reviews = place_data.get('reviews', place_put.reviews)
             return {"message": "Place updated successfully"}, 200
         except ValueError:
             return {"ValueError": "Invalid input data"}, 400
