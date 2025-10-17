@@ -11,7 +11,8 @@
     - [models subdirectory](#models-subdirectory)
     - [services subdirectory](#services-subdirectory)
     - [persistence subdirectory](#persistence-subdirectory)
-  - [TESTING:](#testing)
+  - [Testing](#testing)
+  - [In summary](#in-summary)
 
 ## Context
 Based on the diagrams we made in part1, we can now implement our business logic layer and our API endpoints. This will be done using __Python__ and __Flask__ (for RESTful API).<br/>
@@ -112,7 +113,7 @@ This file is the one that orchestrates the interactions between our layers. The 
 ### persistence subdirectory
 Aside from the `__init__` file already discussed in [app subdirectory](#app-subdirectory), the persistence subdirectory, at this point in time, contains only the [`repository`](./app/persistence/repository.py) file. An abstract class of the same name is used to define an in-memory repository, where all the instances of our components will be stored for now.<br/>
 
-## TESTING:
+## Testing
 We ran tests required by the expected return codes of our app, like `201 - correct output` or `400 - Bad Request`. For instance, we made sure that a user could only input an email that follows the `[]@[].[]` format, where anything between brackets is alphanumeric or a valid special character (notably a period (`.`) or underscore (`_`)).<br/>
 
 To test a component, run the test script related to it. For instance, from the hbnb directory:<br/>
@@ -133,3 +134,6 @@ As the whole interface is in one page, it is very easy to run all sorts of tests
 
 Of course, there are many tests to run and only slightly less ways to run them. As we implemented the various components for our app, we ran our tests in Postman. Because a picture speaks a thousand words, here is an example of a 400 return on a Place creation, where the place object has no title:<br/>
 [![Capture-d-cran-2025-10-18-003701.png](https://i.postimg.cc/s22DRH1V/Capture-d-cran-2025-10-18-003701.png)](https://postimg.cc/k2kdQcxZ)
+
+## In summary
+One component at a time, from models to api endpoints, we have ensured attributes would be validated before being implemented. Those validations begin with the Models and are further checked with the API endpoints' responses. Those validations are subject to change in the next part of the project, as we'll learn how to incorporate a database to our app.
