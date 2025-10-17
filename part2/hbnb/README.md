@@ -122,7 +122,7 @@ Also available are [`amenity_test`](./app/tests/amenity_test.py) and [`place_tes
 
 Another way to run tests is through _Swagger documentation_. When running the app locally, simply head over to [`http://127.0.0.1:5000/api/v1/`](http://127.0.0.1:5000/api/v1/). You will see something like this:<br/>
 
-![Swagger documentation HBnB API: Users and amenities](https://postimg.cc/7JP45Rqv)
+[![Capture-d-cran-2025-10-17-234915.png](https://i.postimg.cc/yN6XCKFm/Capture-d-cran-2025-10-17-234915.png)](https://postimg.cc/TKSWnZN1)
 
 To run a test, edit a payload value and execute it. Here is a simple example of user creation through Swagger:
 [![Capture-d-cran-2025-10-18-002552.png](https://i.postimg.cc/CKrXnm7L/Capture-d-cran-2025-10-18-002552.png)](https://postimg.cc/kV8fkNLk)<br/>
