@@ -9,6 +9,7 @@
     - [api subdirectory](#api-subdirectory)
       - [v1 subdirectory](#v1-subdirectory)
     - [models subdirectory](#models-subdirectory)
+  - [TESTING:](#testing)
 
 ## Context
 Based on the diagrams we made in part1, we can now implement our business logic layer and our API endpoints. This will be done using __Python__ and __Flask__ (for RESTful API).<br/>
@@ -94,13 +95,24 @@ The parent class `BaseModel` provides a `UUID`, a `creation date` and an `update
   * `price`, `latitude`, `longitude` (float, of which only price has to be positive)
   * `amenities`, `reviews` (list)
 * [`review.py`](./app/models/review.py) allows the instantiation of a Review object with attributes `text`, `rating`, `place_id` and `user_id`.
+* [`user.py`](./app/models/user.py) allows the instantiation of a User object. It further implements User attributes such as:
+  * `first_name`, `last_name` (string)
+  * `is_admin` (bool, defaults to False)
+Relationships between models (one-to-many, many-to-many) are represented as relational attributes such as lists, IDs, or linked objects.<br/>
+Constraints (length of names, reviews being linked to a place and a user) are enforced during creation or updates.
 
-        SOUS-DOSSIER: `models` <- core models w data validation
-            FICHIER: `__init__.py`
-            FICHIER: `amenity.py` <- subclass of basemodel, sets up amenity name after verif
-            FICHIER: `base_model.py` <- attributes shared by all components: UUID, created_at, updated_at
-            FICHIER: `place.py` <- subclass basemodel, sets up place attr after verif
-            FICHIER: `review.py` <- subclass basemodel, sets up review attr after verif
+## TESTING:
+To test these models, run the test script related to each model. For instance, from the hbnb directory:
+python3 -m unittest app/tests/user_test.py
+
+Also available are [`amenity_test`](./app/tests/amenity_test.py) and [`place_test`](./app/tests/place_test.py).
+
+We ran tests required by the expected return codes of our app, like 201 - correct output or 400 - Bad Request. For instance, we made sure that a user could only input an email that follows a <[]@[].[]> format, where anything between brackets is alphanumeric or a valid special character (notably a period or an underscore).
+
+We ran our tests in Postman, but should you want to 
+Each model class should support the following operations: validation, saving, deletion, conversion to dictionary, etc
+
+Relationship integrity (e.g., a review cannot exist without a place or user) should be enforced through validation rules
             FICHIER: `user.py` <- subclass basemodel, sets up user attr after verif
         SOUS-DOSSIER: `persistence` <- has a in-memo repo for now, a DB later
             FICHIER: `__init__.py`
@@ -109,7 +121,4 @@ The parent class `BaseModel` provides a `UUID`, a `creation date` and an `update
             FICHIER: `__init__.py`
             FICHIER: `facade.py` <- handles business logic such as implementation & interactions between the components
         FICHIER: `__init__.py` <- to treat directory as importable package
-    FICHIER: `run.py` <- Launches our app
-    FICHIER: `config.py` <- used for configuring environment variables and application settings
-    FICHIER: `README.md` <- to explain our lil project to the world (za warudo)
-    FICHIER: `requirements.txt` <- lists Python packages needed for the project
+
