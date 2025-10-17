@@ -2,8 +2,6 @@
 __pycache__/
 *.py[codz]
 *$py.class
-Dockerfile
-tests
 
 # C extensions
 *.so
