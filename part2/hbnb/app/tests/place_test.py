@@ -1,19 +1,88 @@
-from app.models.place import Place
-from app.models.user import User
-from app.models.review import Review
+import unittest
+from app import create_app
 
-def test_place_creation():
-    owner = User(first_name="Alice", last_name="Smith", email="alice.smith@example.com")
-    place = Place(title="Cozy Apartment", description="A nice place to stay", price=100, latitude=37.7749, longitude=-122.4194, owner=owner)
 
-    # Adding a review
-    review = Review(text="Great stay!", rating=5, place=place, user=owner)
-    place.add_review(review)
+class TestPlaceEndpoints(unittest.TestCase):
 
-    assert place.title == "Cozy Apartment"
-    assert place.price == 100
-    assert len(place.reviews) == 1
-    assert place.reviews[0].text == "Great stay!"
-    print("Place creation and relationship test passed!")
+    def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client()
 
-test_place_creation()
+    def test_create_place(self): # basic place creation
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Cozy flat",
+            "description": "Perfect for rainy weekends",
+            "price": 45.0,
+            "latitude": 50.62,
+            "longitude": 3.048,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "amenities": "None"
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_place_no_descr(self): # place creation without description
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Cozy flat",
+            "price": 45.0,
+            "description": "None",
+            "latitude": 50.62,
+            "longitude": 3.048,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "amenities": "None"
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_negative_price(self): # verifying price cannot be a negative number
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Cozy flat",
+            "description": "Perfect for rainy weekends",
+            "price": -45.0,
+            "latitude": 50.62,
+            "longitude": 3.048,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_outofbounds_latitude(self): # testing response for out of bounds latitude
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Cozy flat",
+            "description": "Perfect for rainy weekends",
+            "price": 45.0,
+            "latitude": 800.62,
+            "longitude": 3.048,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_outofbounds_longitude(self): # testing response for out of bounds longitude
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Cozy flat",
+            "description": "Perfect for rainy weekends",
+            "price": 45.0,
+            "latitude": 50.62,
+            "longitude": -203.048,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_title_too_long(self): # testing response when title > 100 characters
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Taumata­whakatangihanga­koauau­o­tamatea­turi­pukaka­piki­maunga­horo­nuku­pokai­whenua­ki­tana­tahu in North Island, New Zealand",
+            "description": "Perfect for a walk",
+            "price": 78.0,
+            "latitude": 50.62,
+            "longitude": -203.048,
+            "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_no_owner_id(self): # testing response with missing owner id
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Cozy flat",
+            "description": "Perfect for rainy weekends",
+            "price": 45.0,
+            "latitude": 50.62,
+            "longitude": -203.048,
+            "owner_id": ""
+        })
+        self.assertEqual(response.status_code, 400)
