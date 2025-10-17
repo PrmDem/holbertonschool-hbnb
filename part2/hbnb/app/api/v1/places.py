@@ -42,34 +42,46 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        place_data = api.payload
-        new_place = facade.create_place(place_data)
-        return {
-                'id': new_place.id,
-                'title': new_place.title,
-                'description': new_place.description,
-                'price': new_place.price,
-                'latitude': new_place.latitude,
-                'longitude': new_place.longitude,
-                'owner_id': new_place.owner_id
-            }, 201
+        try:
+            place_data = api.payload
+
+            required = ['title', 'price', 'latitude', 'longitude', 'owner_id', 'description']
+            for r in required:
+                    if r not in place_data or place_data[r] in [None, ""]:
+                        return {"error": f"'{r}' field is required and cannot be empty"}, 400
+
+            new_place = facade.create_place(place_data)
+            return {
+                    'id': new_place.id,
+                    'title': new_place.title,
+                    'description': new_place.description,
+                    'price': new_place.price,
+                    'latitude': new_place.latitude,
+                    'longitude': new_place.longitude,
+                    'owner_id': new_place.owner_id
+                }, 201
+        except ValueError as e:
+            return {"error": str(e)}, 400
+        except Exception as e:
+            return {"error": f"Unexpected error: {str(e)}"}, 400
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        #try:
-        #.....................
-        #revoir tous l affichage comme demandé
-        places = facade.get_all_places()
-        all_places = [{
-            'id': place.id,
-            'title': place.title,
-            'latitude': place.latitude,
-            'longitude': place.longitude,
-        } for place in places]
-        return all_places, 200
-        #except Exception as e:
-        #return {"Error": f"{str(e)}"}, 404
+        try:
+
+            places = facade.get_all_places()
+            if not places:
+                return {"error": "No places found"}, 404
+            all_places = [{
+                'id': place.id,
+                'title': place.title,
+                'latitude': place.latitude,
+                'longitude': place.longitude,
+            } for place in places]
+            return all_places, 200
+        except Exception as e:
+            return {"Error": f"{str(e)}"}, 404
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -79,17 +91,40 @@ class PlaceResource(Resource):
         """Get place details by ID"""
         try:
             place = facade.get_place(place_id)
+            if not place:
+                return {"error": "Place not found"}, 404
+            
+            owner = facade.get_user(place.owner_id)
+
+            if owner:
+                owner_data = {
+                    "id": owner.id,
+                    "first_name": owner.first_name,
+                    "last_name": owner.last_name,
+                    "email": owner.email
+                }
+            else:
+                owner_data = None
+        
+            amenities_data = []
+ 
+            amenity_ids = place.amenities if place.amenities else []
+            
+            for amenity_id in amenity_ids: 
+                a = facade.get_amenity(amenity_id)
+                if a:
+                    amenities_data.append({"id": a.id, "name": a.name})
+            
             return {
-                'id': place.id,
-                'title': place.title,
-                'description': place.description,
-                'price': place.price,
-                'latitude': place.latitude,
-                'longitude': place.longitude,
-                'owner_id': place.owner_id,
-                'amenities': place.amenities,
-                'reviews': place.reviews
-            }, 201
+                "id": place.id,
+                "title": place.title,
+                "description": place.description,
+                "latitude": place.latitude,
+                "longitude": place.longitude,
+                "owner": owner_data,
+                "amenities": amenities_data
+            }, 200
+        
         except Exception as e:
             return {"Error": f"{str(e)}"}, 404
 
@@ -101,7 +136,23 @@ class PlaceResource(Resource):
         """Update a place's information"""
         try:
             place_put = facade.get_place(place_id)
+            if not place_put:
+                return {"error": "Place not found"}, 404
+            
+            required = ['title', 'price', 'description']
+                    
             place_data = api.payload
+
+            for r in required:
+                    if r not in place_data or place_data[r] in [None, ""]:
+                        return {"error": f"'{r}' field is required and cannot be empty"}, 400
+                    
+            if place_data["price"] <= 0:
+                return {"error": "Price must be greater than 0"}, 400
+                    
+            if not isinstance(place_data, dict):
+                return {"error": "Invalid input data format"}, 400
+            
             place_put.title = place_data.get('title', place_put.title)
             place_put.description = place_data.get('description', place_put.description)
             place_put.price = place_data.get('price', place_put.price)
