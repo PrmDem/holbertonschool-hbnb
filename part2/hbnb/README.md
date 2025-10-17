@@ -9,6 +9,8 @@
     - [api subdirectory](#api-subdirectory)
       - [v1 subdirectory](#v1-subdirectory)
     - [models subdirectory](#models-subdirectory)
+    - [services subdirectory](#services-subdirectory)
+    - [persistence subdirectory](#persistence-subdirectory)
   - [TESTING:](#testing)
 
 ## Context
@@ -89,8 +91,7 @@ As explained in the [app subdirectory](#app-subdirectory) section, our API endpo
 ### models subdirectory
 All core models are within this directory. They implement data validation on the various attributes of the component they are related to.<br/>
 The parent class `BaseModel` provides a `UUID`, a `creation date` and an `update date`. Every component has its own class but all of these classes inherit from `BaseModel`, as every instance of a component will have a UUID and creation/update dates.<br/>
-* [`amenity.py`](./app/models/amenity.py) allows the instantiation of an Amenity object, adding an attribute `name` (string).
-* [`place.py`](./app/models/place.py) allows the instantiation of a Place object. The other Place attributes implemented here are:
+  * [`place.py`](./app/models/place.py) allows the instantiation of a Place object. The other Place attributes implemented here are:
   * `title`, `description`, `owner_id` (string)
   * `price`, `latitude`, `longitude` (float, of which only price has to be positive)
   * `amenities`, `reviews` (list)
@@ -101,24 +102,21 @@ The parent class `BaseModel` provides a `UUID`, a `creation date` and an `update
 Relationships between models (one-to-many, many-to-many) are represented as relational attributes such as lists, IDs, or linked objects.<br/>
 Constraints (length of names, reviews being linked to a place and a user) are enforced during creation or updates.
 
+### services subdirectory
+This is the home of a crucial part of any application: the [`Facade`](./app/services/facade.py). Through the Facade we get to create, read, and update our components*.<br/>
+This file is the one that orchestrates the interactions between our layers. The models are called by it to instantiate our users, places, etc, and requests about those same objects go through the Facade first.
+
+
+*Note that only the `Review` objects can be deleted at this time.<br/>
+
+### persistence subdirectory
+Aside from the `__init__` file already discussed in [app subdirectory](#app-subdirectory), the persistence subdirectory, at this point in time, contains only the [`repository`](./app/persistence/repository.py) file. An abstract class of the same name is used to define an in-memory repository, where all the instances of our components will be stored for now.<br/>
+
 ## TESTING:
-To test these models, run the test script related to each model. For instance, from the hbnb directory:
-python3 -m unittest app/tests/user_test.py
+To test these models, run the test script related to each model. For instance, from the hbnb directory:<br/>
+```python3 -m unittest app/tests/user_test.py```
 
 Also available are [`amenity_test`](./app/tests/amenity_test.py) and [`place_test`](./app/tests/place_test.py).
 
-We ran tests required by the expected return codes of our app, like 201 - correct output or 400 - Bad Request. For instance, we made sure that a user could only input an email that follows a <[]@[].[]> format, where anything between brackets is alphanumeric or a valid special character (notably a period or an underscore).
 
-We ran our tests in Postman, but should you want to 
-Each model class should support the following operations: validation, saving, deletion, conversion to dictionary, etc
-
-Relationship integrity (e.g., a review cannot exist without a place or user) should be enforced through validation rules
-            FICHIER: `user.py` <- subclass basemodel, sets up user attr after verif
-        SOUS-DOSSIER: `persistence` <- has a in-memo repo for now, a DB later
-            FICHIER: `__init__.py`
-            FICHIER: `repository.py` <- abstract class; in-memory repository & interface implemented there
-        SOUS-DOSSIER: `services` <- where we implement facade
-            FICHIER: `__init__.py`
-            FICHIER: `facade.py` <- handles business logic such as implementation & interactions between the components
-        FICHIER: `__init__.py` <- to treat directory as importable package
-
+We ran tests required by the expected return codes of our app, like 201 - correct output or 400 - Bad Request. For instance, we made sure that a user could only input an email that follows the `[]@[].[]` format, where anything between brackets is alphanumeric or a valid special character (notably a period (`.`) or underscore (`_`)).<br/>
