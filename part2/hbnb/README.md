@@ -113,10 +113,23 @@ This file is the one that orchestrates the interactions between our layers. The 
 Aside from the `__init__` file already discussed in [app subdirectory](#app-subdirectory), the persistence subdirectory, at this point in time, contains only the [`repository`](./app/persistence/repository.py) file. An abstract class of the same name is used to define an in-memory repository, where all the instances of our components will be stored for now.<br/>
 
 ## TESTING:
-To test these models, run the test script related to each model. For instance, from the hbnb directory:<br/>
+We ran tests required by the expected return codes of our app, like `201 - correct output` or `400 - Bad Request`. For instance, we made sure that a user could only input an email that follows the `[]@[].[]` format, where anything between brackets is alphanumeric or a valid special character (notably a period (`.`) or underscore (`_`)).<br/>
+
+To test a component, run the test script related to it. For instance, from the hbnb directory:<br/>
 ```python3 -m unittest app/tests/user_test.py```
 
-Also available are [`amenity_test`](./app/tests/amenity_test.py) and [`place_test`](./app/tests/place_test.py).
+Also available are [`amenity_test`](./app/tests/amenity_test.py) and [`place_test`](./app/tests/place_test.py).<br/>
+
+Another way to run tests is through _Swagger documentation_. When running the app locally, simply head over to [`http://127.0.0.1:5000/api/v1/`](http://127.0.0.1:5000/api/v1/). You will see something like this:<br/>
+
+![Swagger documentation HBnB API: Users and amenities](https://postimg.cc/7JP45Rqv)
+
+To run a test, edit a payload value and execute it. Here is a simple example of user creation through Swagger:
+[![Capture-d-cran-2025-10-18-002552.png](https://i.postimg.cc/CKrXnm7L/Capture-d-cran-2025-10-18-002552.png)](https://postimg.cc/kV8fkNLk)<br/>
+[![Capture-d-cran-2025-10-18-002853.png](https://i.postimg.cc/1t6BRHYT/Capture-d-cran-2025-10-18-002853.png)](https://postimg.cc/cgxwXQWM)
 
 
-We ran tests required by the expected return codes of our app, like 201 - correct output or 400 - Bad Request. For instance, we made sure that a user could only input an email that follows the `[]@[].[]` format, where anything between brackets is alphanumeric or a valid special character (notably a period (`.`) or underscore (`_`)).<br/>
+As the whole interface is in one page, it is very easy to run all sorts of tests in one go.<br/>
+
+Of course, there are many tests to run and only slightly less ways to run them. As we implemented the various components for our app, we ran our tests in Postman. Because a picture speaks a thousand words, here is an example of a 400 return on a Place creation, where the place object has no title:<br/>
+[![Capture-d-cran-2025-10-18-003701.png](https://i.postimg.cc/s22DRH1V/Capture-d-cran-2025-10-18-003701.png)](https://postimg.cc/k2kdQcxZ)
