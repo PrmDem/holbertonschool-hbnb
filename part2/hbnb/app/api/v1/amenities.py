@@ -16,6 +16,8 @@ class AmenityList(Resource):
     def post(self):
         """Register a new amenity"""
         amenity_data = api.payload
+        if not amenity_data:
+            return {"Error": "Invalid input data"}, 400
         new_amenity = facade.create_amenity(amenity_data)
         return {'id': new_amenity.id, 'name': new_amenity.name}, 201
 

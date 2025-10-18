@@ -1,15 +1,30 @@
-from app.models.amenity import Amenity
+import unittest
+from app import create_app
 
-def test_amenity_creation():
-    amenity = Amenity(name="Wi-Fi")
-    assert amenity.name == "Wi-Fi"
-    print("Amenity creation test passed!")
 
-def test_amenity_exception():
-    try:
-        amenity = Amenity(name="")
-    except ValueError:
-        print("Amenity name check test passed!")
+class TestPlaceEndpoints(unittest.TestCase):
 
-test_amenity_creation()
-test_amenity_exception()
+    def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client()
+
+    def test_amenity_creation(self): #basic amenity creation
+        response = self.client.post('/api/v1/amenities/', json={
+            "name": "swimming pool"
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_amenity_no_input(self): # no valid name input
+        response = self.client.post('/api/v1/amenities/', json={
+            "name": 123
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_find_amenity_by_id(self): # finding amenity by appending id to endpoint
+        response = self.client.post('/api/v1/amenities/', json={
+            "name": "roomba"
+        })
+        amenity_data = response.get_json()
+        amenity_id = amenity_data["id"]
+        new_response = self.client.get(f'/api/v1/amenities/{amenity_id}')
+        self.assertEqual(new_response, 200)
