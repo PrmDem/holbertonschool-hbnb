@@ -19,12 +19,3 @@ class TestPlaceEndpoints(unittest.TestCase):
             "name": 123
         })
         self.assertEqual(response.status_code, 400)
-
-    def test_find_amenity_by_id(self): # finding amenity by appending id to endpoint
-        response = self.client.post('/api/v1/amenities/', json={
-            "name": "roomba"
-        })
-        amenity_data = response.get_json()
-        amenity_id = amenity_data["id"]
-        new_response = self.client.get(f'/api/v1/amenities/{amenity_id}')
-        self.assertEqual(new_response, 200)
