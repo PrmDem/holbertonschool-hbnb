@@ -1,17 +1,18 @@
 from app.models.base_model import BaseModel
+from app.services import facade
 
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None, reviews=None):
         super().__init__()
         self.title = title
         self.description = description
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
-        self.owner = owner
-        self.reviews = []
-        self.amenities = []
+        self.owner_id = owner_id
+        self.amenities = amenities if amenities is not None else []
+        self.reviews = reviews if reviews is not None else []
 
     @property
     def title(self):
@@ -19,10 +20,11 @@ class Place(BaseModel):
 
     @title.setter
     def title(self, value):
-        if value and len(value) <= 100:
-            self.__title = value
-        else:
-            raise ValueError("Title must be between 1 and 100 characters")
+        try:
+            if value and len(value) <= 100:
+                self.__title = value
+        except ValueError:
+            return {"ValueError": "Title must be between 1 and 100 characters"}, 400
 
     @property
     def price(self):
@@ -30,10 +32,11 @@ class Place(BaseModel):
 
     @price.setter
     def price(self, value):
-        if isinstance(value, float) and value > 0:
-            self.__price = value
-        else:
-            raise ValueError("Price must be a positive number")
+        try:
+            if isinstance(value, float) and value > 0:
+                self.__price = value
+        except ValueError:
+            return {"ValueError": "Price must be a positive number"}, 400
 
     @property
     def latitude(self):
@@ -41,10 +44,11 @@ class Place(BaseModel):
 
     @latitude.setter
     def latitude(self, value):
-        if isinstance(value, float) and -90.00 <= value <= 90.00:
-            self.__latitude = value
-        else:
-            raise ValueError("Latitude must be between -90.00 and 90.00")
+        try:
+            if isinstance(value, float) and -90.00 <= value <= 90.00:
+                self.__latitude = value
+        except ValueError:
+            return {"ValueError": "Latitude must be between -90.00 and 90.00"}, 400
 
     @property
     def longitude(self):
@@ -52,19 +56,22 @@ class Place(BaseModel):
 
     @longitude.setter
     def longitude(self, value):
-        if isinstance(value, float) and -180.00 <= value <= 180.00:
-            self.__longitude = value
-        else:
-            raise ValueError("Longitude must be between -180.00 and 180.00")
+        try:
+            if isinstance(value, float) and -180.00 <= value <= 180.00:
+                self.__longitude = value
+        except ValueError:
+            return {"ValueError": "Longitude must be between -180.00 and 180.00"}, 400
 
     @property
-    def owner(self):
-        return self.__owner
+    def owner_id(self):
+        return self.__owner_id
 
-    @owner.setter
-    def owner(self, value):
-        # check w/ persistence model for user ?
-        self.__owner = value
+    @owner_id.setter
+    def owner_id(self, value):
+        try:
+            self.__owner_id = value
+        except ValueError:
+            return {"ValueError": "Invalid user ID"}
 
     def add_review(self, review):
         """Add a review to the place."""

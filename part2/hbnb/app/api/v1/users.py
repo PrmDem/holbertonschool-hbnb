@@ -20,19 +20,22 @@ class UserList(Resource):
         """Register a new user"""
         user_data = api.payload
 
-        # Simulate email uniqueness check (to be replaced by real validation with persistence)
+        # Simulate gitemail uniqueness check (to be replaced by real validation with persistence)
         existing_user = facade.get_user_by_email(user_data['email'])
         if existing_user:
             return {'error': 'Email already registered'}, 400
+        try:
+            new_user = facade.create_user(user_data)
 
-        new_user = facade.create_user(user_data)
+        except:
+            return {'error': 'invalid input data'}, 400
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
     
     @api.response(200, 'list of user')
     @api.response(500, 'Internal server error')
     def get(self):
         """
-        retrivied all user
+        retrieved all users
         """
         try:
             user_all = facade.all_users()
@@ -76,7 +79,7 @@ class UserResource(Resource):
         user_put.email = user_data.get('email', user_put.email)
 
         #problem pour save update, ajout dans facade de update_user etde la ligne en dessous mais plantage....
-        # fonctionne sans sauvegarde juste return,voir avec priam gestion des classe par exemple
+        # fonctionne sans sauvegarde juste return,voir avec priam gestion des classe user par exemple
         #facade.update_user(user_id, user_put)
         
         return {'id': user_put.id, 'first_name': user_put.first_name, 'last_name': user_put.last_name, 'email': user_put.email}, 200
