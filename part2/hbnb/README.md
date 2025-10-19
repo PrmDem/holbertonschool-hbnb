@@ -136,4 +136,4 @@ Of course, there are many tests to run and only slightly less ways to run them. 
 [![Capture-d-cran-2025-10-18-003701.png](https://i.postimg.cc/s22DRH1V/Capture-d-cran-2025-10-18-003701.png)](https://postimg.cc/k2kdQcxZ)
 
 ## In summary
-One component at a time, from models to api endpoints, we have ensured attributes would be validated before being implemented. Those validations begin with the Models and are further checked with the API endpoints' responses. Those validations are subject to change in the next part of the project, as we'll learn how to incorporate a database to our app.
+One component at a time, from models to api endpoints, we have ensured attributes would be validated before being implemented.<br/>Those validations begin with the Models and are further checked with the API endpoints' responses.<br/>They are subject to change in the next part of the project, as we'll learn how to incorporate a database to our app.
