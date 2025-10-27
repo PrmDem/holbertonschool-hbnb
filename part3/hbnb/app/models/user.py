@@ -1,4 +1,5 @@
 from app.models.base_model import BaseModel
+from app.extensions import bcrypt
 import re
 
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
@@ -16,11 +17,12 @@ class User(BaseModel):
     are set via the call to BaseModel's init method.
 
     """
-    def __init__(self, first_name, last_name, email, is_admin=False):
+    def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        self.password = self.hash_password(password)
         self.is_admin = is_admin
         self.places = []
 
@@ -57,6 +59,15 @@ class User(BaseModel):
         if not re.fullmatch(regex, value):
             raise ValueError("Invalid email format")
         self.__email = value
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        return self.password
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
 
     def owned_places(self, place):
         """Add an owned place to the user"""
