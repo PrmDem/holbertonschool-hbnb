@@ -71,12 +71,20 @@ class Place(BaseModel):
         try:
             self.__owner_id = value
         except ValueError:
-            return {"ValueError": "Invalid user ID"}
+            return {"ValueError": "Invalid user ID"}, 400
 
     def add_review(self, review):
         """Add a review to the place."""
-        self.reviews.append(review)
+        try:
+            facade.get_review(review.id)
+            self.reviews.append(review)
+        except Exception as e:
+            return {'error': str(e)}
 
     def add_amenity(self, amenity):
         """Add an amenity to the place."""
-        self.amenities.append(amenity)
+        try:
+            facade.get_amenity(amenity.id)
+            self.amenities.append(amenity)
+        except Exception as e:
+            return {'error': str(e)}
