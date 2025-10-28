@@ -83,3 +83,14 @@ class HBnBFacade:
 
     def delete_review(self, review_id):
         return self.review_repo.delete(review_id)
+    
+    def compare_review(self, user_id, place_id):
+        """
+        Verify if is not place of user or if it s the first review
+        """
+        reviews = self.review_repo.get_all()
+        for review in reviews:
+            if review.user_id == user_id and review.place_id == place_id:
+                return True
+        return False
+
