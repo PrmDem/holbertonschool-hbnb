@@ -26,6 +26,7 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+"""
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         self.first_name = first_name
@@ -34,6 +35,7 @@ class User(BaseModel):
         self.password = self.hash_password(password)
         self.is_admin = is_admin
         self.places = []
+"""
 
     @property
     def first_name(self):
