@@ -41,15 +41,17 @@ class PlaceList(Resource):
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
-        """Register a new place"""
+        """Create a new place"""
+        current_user = get_jwt_identity()
         try:
             place_data = api.payload
 
             required = ['title', 'price', 'latitude', 'longitude', 'owner_id', 'description']
             for r in required:
-                    if r not in place_data or place_data[r] in [None, ""]:
-                        return {"error": f"'{r}' field is required and cannot be empty"}, 400
+                if r not in place_data or place_data[r] in [None, ""]:
+                    return {"error": f"'{r}' field is required and cannot be empty"}, 400
 
             new_place = facade.create_place(place_data)
             return {
@@ -70,7 +72,6 @@ class PlaceList(Resource):
     def get(self):
         """Retrieve a list of all places"""
         try:
-
             places = facade.get_all_places()
             if not places:
                 return {"error": "No places found"}, 404
@@ -108,7 +109,6 @@ class PlaceResource(Resource):
                 owner_data = None
         
             amenities_data = []
- 
             amenity_ids = place.amenities if place.amenities else []
             
             for amenity_id in amenity_ids: 
@@ -150,6 +150,8 @@ class PlaceResource(Resource):
             place_put = facade.get_place(place_id)
             if not place_put:
                 return {"error": "Place not found"}, 404
+            if place_put.owner_id != current_user:
+                return {'error': 'Unauthorized action'}, 403
             
             required = ['title', 'price', 'description']
                     

@@ -126,6 +126,18 @@ class AdminUserResource(Resource):
         if not existing_user:
             return {'error': 'User not found'}, 404
         
+        user_data = api.payload
+
+        if 'email' in user_data or 'password' in user_data:
+            return {'error': 'You cannot modify email or password.'}, 400
+
+        user_put.first_name = user_data.get('first_name', user_put.first_name)
+        user_put.last_name = user_data.get('last_name', user_put.last_name)
+        
+        facade.update_user(user_id, {
+            'first_name': user_put.first_name,
+            'last_name': user_put.last_name
+        })
         try:
             existing_user.first_name = user_data.get('first_name', existing_user.first_name)
         except ValueError as e:
