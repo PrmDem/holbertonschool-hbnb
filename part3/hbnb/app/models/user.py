@@ -1,6 +1,7 @@
-from app.models.base_model import BaseModel
+from .base_model import BaseModel
 from app.extensions import bcrypt
-import re
+from app import db
+import re, uuid
 
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 # correct format to verify user email against
@@ -17,6 +18,14 @@ class User(BaseModel):
     are set via the call to BaseModel's init method.
 
     """
+    __tablename__ = 'users'
+
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(db.String(128), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         self.first_name = first_name
