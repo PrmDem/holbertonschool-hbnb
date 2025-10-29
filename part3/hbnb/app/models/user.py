@@ -35,7 +35,6 @@ class User(BaseModel):
         self.password = self.hash_password(password)
         self.is_admin = is_admin
         self.places = []
-"""
 
     @property
     def first_name(self):
@@ -72,14 +71,15 @@ class User(BaseModel):
         self.__email = value
 
     def hash_password(self, password):
-        """Hashes the password before storing it."""
+        # Hashes the password before storing it.
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         return self.password
 
     def verify_password(self, password):
-        """Verifies if the provided password matches the hashed password."""
+        # Verifies if the provided password matches the hashed password.
         return bcrypt.check_password_hash(self.password, password)
 
     def owned_places(self, place):
-        """Add an owned place to the user"""
+        # Add an owned place to the user
         self.places.append(place)
+"""
