@@ -130,14 +130,7 @@ class AdminUserResource(Resource):
 
         if 'email' in user_data or 'password' in user_data:
             return {'error': 'You cannot modify email or password.'}, 400
-
-        user_put.first_name = user_data.get('first_name', user_put.first_name)
-        user_put.last_name = user_data.get('last_name', user_put.last_name)
         
-        facade.update_user(user_id, {
-            'first_name': user_put.first_name,
-            'last_name': user_put.last_name
-        })
         try:
             existing_user.first_name = user_data.get('first_name', existing_user.first_name)
         except ValueError as e:
@@ -149,9 +142,16 @@ class AdminUserResource(Resource):
         try:
             existing_user.email = user_data.get('email', existing_user.email)
         except ValueError as e:
-            return {'error': str(e)}, 400   # in case email is invalid
-        
-        existing_user.password = user_data.get('password', existing_user.password)
+            return {'error': str(e)}, 400
+        try:
+            existing_user.password = user_data.get('password', existing_user.password)
+        except ValueError as e:
+            return {'error': str(e)}, 400
+
+        facade.update_user(user_id, {
+            'first_name': existing_user.first_name,
+            'last_name': existing_user.last_name
+        })
 
         # problem pour save update, ajout dans facade de update_user et de la ligne en dessous mais plantage....
         # fonctionne sans sauvegarde juste return,voir avec priam gestion des classe user par exemple

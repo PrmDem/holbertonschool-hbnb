@@ -115,6 +115,20 @@ class PlaceResource(Resource):
                 a = facade.get_amenity(amenity_id)
                 if a:
                     amenities_data.append({"id": a.id, "name": a.name})
+
+            reviews_data = []
+            review_ids = place.reviews if place.reviews else []
+            
+            for review_id in review_ids: 
+                r = facade.get_review(review_id)
+                if r:
+                    reviews_data.append({
+                        "id": r.id,
+                        "text": r.text,
+                        "rating": r.rating,
+                        "user_id": r.user_id,
+                        "place_id": r.place_id
+                    })
             
             return {
                 "id": place.id,
@@ -123,7 +137,8 @@ class PlaceResource(Resource):
                 "latitude": place.latitude,
                 "longitude": place.longitude,
                 "owner": owner_data,
-                "amenities": amenities_data
+                "amenities": amenities_data,
+                "reviews": reviews_data
             }, 200
         
         except Exception as e:
@@ -150,7 +165,7 @@ class PlaceResource(Resource):
             place_put = facade.get_place(place_id)
             if not place_put:
                 return {"error": "Place not found"}, 404
-            if place_put.owner_id != current_user:
+            if not is_admin and place_put.owner_id != current_user:
                 return {'error': 'Unauthorized action'}, 403
             
             required = ['title', 'price', 'description']
