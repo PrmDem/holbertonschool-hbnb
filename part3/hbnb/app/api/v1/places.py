@@ -69,6 +69,7 @@ class PlaceList(Resource):
             return {"error": f"Unexpected error: {str(e)}"}, 400
 
     @api.response(200, 'List of places retrieved successfully')
+    @api.response(404, 'Places not found')
     def get(self):
         """Retrieve a list of all places"""
         try:
@@ -83,7 +84,8 @@ class PlaceList(Resource):
             } for place in places]
             return all_places, 200
         except Exception as e:
-            return {"Error": f"{str(e)}"}, 404
+            return {"Error": str(e)}, 404
+
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -144,6 +146,7 @@ class PlaceResource(Resource):
         except Exception as e:
             return {"Error": f"{str(e)}"}, 404
 
+
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
@@ -169,29 +172,42 @@ class PlaceResource(Resource):
                 return {'error': 'Unauthorized action'}, 403
             
             required = ['title', 'price', 'description']
-                    
             place_data = api.payload
 
             for r in required:
                     if r not in place_data or place_data[r] in [None, ""]:
                         return {"error": f"'{r}' field is required and cannot be empty"}, 400
-                    
+   
             if place_data["price"] <= 0:
                 return {"error": "Price must be greater than 0"}, 400
-                    
             if not isinstance(place_data, dict):
                 return {"error": "Invalid input data format"}, 400
-            
-            place_put.title = place_data.get('title', place_put.title)
-            place_put.description = place_data.get('description', place_put.description)
-            place_put.price = place_data.get('price', place_put.price)
-            place_put.latitude = place_data.get('latitude', place_put.latitude)
-            place_put.longitude = place_data.get('longitude', place_put.longitude)
-            place_put.owner_id = place_data.get('owner_id', place_put.owner_id)
-            place_put.amenities = place_data.get('amenities', place_put.amenities)
-            place_put.reviews = place_data.get('reviews', place_put.reviews)
+
+            facade.update_place(place_id, place_data)
             return {"message": "Place updated successfully"}, 200
+
         except ValueError:
             return {"ValueError": "Invalid input data"}, 400
         except Exception as e:
-            return {"Error": f"{str(e)}"}, 404
+            return {"Error": str(e)}, 404
+
+
+    @api.response(200, 'Place deleted successfully')
+    @api.response(404, 'Place not found')
+    @jwt_required()
+    def delete_place(place_id):
+        """deletes a place if user is authorised"""
+        current_user = get_jwt()
+        current_place = facade.get_place(place_id)
+
+        if not current_place:
+            return {'error': 'Place not found'}, 404
+        if not current_user['is_admin'] or current_user['id'] != current_place.owner_id:
+            return {'error': 'Unauthorized action'}, 403
+
+        try:
+            facade.delete_place(place_id)
+            return {'message': 'Place deleted successfully'}, 200
+        except Exception as e:
+            return {'error': str(e)}
+
