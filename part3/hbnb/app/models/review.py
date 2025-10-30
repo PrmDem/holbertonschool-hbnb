@@ -1,8 +1,27 @@
-from app.models.base_model import BaseModel
 from sqlalchemy.orm import validates
+from .base_model import BaseModel
+from app.extensions import db
 from app.services import facade
 
 class Review(BaseModel):
+    """Instantiates or updates Review information.
+
+    Defines the following attributes:
+
+    text (str), rating (int)
+    place_id (str), user_id (str)
+
+    Creation and update times, as well as UUID,
+    are set via the call to BaseModel's init method.
+    """
+
+    __tablename__ = 'reviews'
+
+    text = db.Column(db.String, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    place_id = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.String, nullable=False)
+
     def __init__(self, text, rating, place_id, user_id):
         super().__init__()
         self.text = text

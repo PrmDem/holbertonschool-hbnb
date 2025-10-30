@@ -1,8 +1,21 @@
-from app.models.base_model import BaseModel
 from sqlalchemy.orm import validates
+from .base_model import BaseModel
+from app.extensions import db
 
 
 class Amenity(BaseModel):
+    """Instantiates or updates Amenity information.
+
+    Defines the attribute 'name' (str)
+
+    Creation and update times, as well as UUID,
+    are set via the call to BaseModel's init method.
+
+    """
+    __tablename__ = 'amenities'
+
+    name = db.Column(db.String(50), nullable=False)
+
     def __init__(self, name):
         super().__init__()
         self.name = name

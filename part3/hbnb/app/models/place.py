@@ -1,8 +1,7 @@
 from app.services import facade
 from sqlalchemy.orm import validates
 from .base_model import BaseModel
-from app.extensions import bcrypt, db
-import uuid
+from app.extensions import db
 
 
 class Place(BaseModel):
@@ -17,7 +16,7 @@ class Place(BaseModel):
     are set via the call to BaseModel's init method.
 
     """
-    __tablename__ = 'users'
+    __tablename__ = 'places'
 
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(50), nullable=True)
@@ -79,7 +78,7 @@ class Place(BaseModel):
 
     @validates("amenities")
     def validate_add_amenitiy(self, key, amenity):
-        """Add a review to the place."""
+        """Add an amenity to the place."""
         if (amenity not in all.id for all in facade.get_all_amenities()):
             raise ValueError("Invalid amenity ID")
         self.amenities.append(amenity)
