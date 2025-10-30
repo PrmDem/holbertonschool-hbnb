@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required, get_jwt
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 
@@ -8,11 +9,12 @@ user_model = api.model('User', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=True, description='Password of the user')
+    'password': fields.String(required=True, description='Password of the user'),
+    'is_admin': fields.String(required=True, description='Permission level of the user')
 })
 
 @api.route('/')
-class UserList(Resource):
+class UserCreate(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
@@ -20,16 +22,16 @@ class UserList(Resource):
     def post(self):
         """Register a new user"""
         user_data = api.payload
+        email = user_data.get('email')
 
-        # Simulate gitemail uniqueness check (to be replaced by real validation with persistence)
-        existing_user = facade.get_user_by_email(user_data['email'])
-        if existing_user:
+        # Check if email is already in use
+        if facade.get_user_by_email(email):
             return {'error': 'Email already registered'}, 400
 
         try:
             new_user = facade.create_user(user_data)
         except:
-            return {'error': 'invalid input data'}, 400
+            return {'error': 'normal input failed'}, 400
 
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
     
@@ -37,7 +39,7 @@ class UserList(Resource):
     @api.response(500, 'Internal server error')
     def get(self):
         """
-        retrieved all users
+        retrieves all users
         """
         try:
             user_all = facade.all_users()
@@ -52,7 +54,41 @@ class UserList(Resource):
             return user_list, 200
         except Exception as e:
             return {"error": f"error user list: {str(e)}"}, 500
-    
+
+
+@api.route('/admin')
+class AdminUserCreate(Resource):
+    """Class and endpoint used to create as Admin
+    As opposed to regular / from where users can be
+    created by non-admin;
+
+    This is to test our endpoints more easily
+    """
+    @api.expect(user_model, validate=True)
+    @api.response(201, 'User successfully created')
+    @api.response(400, 'Email already registered')
+    @api.response(400, 'Invalid input data')
+    @jwt_required()
+    def post(self):
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+           return {'error': 'Admin privileges required'}, 403
+
+        user_data = api.payload
+        email = user_data.get('email')
+
+        # Check if email is already in use
+        if facade.get_user_by_email(email):
+            return {'error': 'Email already registered'}, 400
+
+        try:
+            new_user = facade.create_user(user_data)
+        except:
+            return {'error': 'invalid input data'}, 400
+
+        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
+
+
 @api.route('/<user_id>')
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
@@ -64,13 +100,18 @@ class UserResource(Resource):
             return {'error': 'User not found'}, 404
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
     
-    @api.expect(user_model, validate=True)
+    @api.expect(user_model)
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
+    @jwt_required()
     def put(self, user_id):
-        """
-        update user
-        """
+        """update user after verifying autorisations"""
+        current_user = get_jwt()
+        
+        # If 'is_admin' is part of the identity payload
+        if not current_user.get('is_admin') or current_user.get('id') != user_id:
+            return {'error': 'Unauthorised action'}, 403
+
         user_put = facade.get_user(user_id)
         if not user_put:
             return {'error': 'User not found'}, 404
