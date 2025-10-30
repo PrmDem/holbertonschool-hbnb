@@ -108,7 +108,10 @@ class AdminUserResource(Resource):
         current_user = get_jwt()
         
         # If 'is_admin' is part of the identity payload
-        if not current_user.get('is_admin') or current_user.get('id') != user_id:
+        is_admin = current_user.get('is_admin', False)
+        is_owner = current_user.get('id') == user_id
+        
+        if not (is_admin or is_owner):
             return {'error': 'Unauthorised action'}, 403
 
         user_put = facade.get_user(user_id)
