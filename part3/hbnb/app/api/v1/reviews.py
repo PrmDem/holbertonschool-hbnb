@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 
 api = Namespace('reviews', description='Review operations')
 
@@ -94,34 +94,34 @@ class ReviewResource(Resource):
         try:
             review_put = facade.get_review(review_id)
             review_data = api.payload
-            #if review_put.owner_id != current_user:
-                #return {'error': 'Unauthorized action'}, 403
-
-            review_put.text = review_data.get('text', review_put.text)
-            review_put.rating = review_data.get('rating', review_put.rating)
-            review_put.user_id = review_data.get('user_id', review_put.user_id)
-            review_put.place_id = review_data.get('place_id', review_put.place_id)
+            if review_put.owner_id != current_user:
+                return {'error': 'Unauthorized action'}, 403
+            facade.update_review(review_id, review_data)
             return {"message": "Review updated successfully"}, 200
-
         except Exception as e:
-            return {"error": f"Review not found: {str(e)}"}, 404
+            return {'error': str(e)}, 404
+
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
+    @api.response(403, 'Unauthorised action')
     @jwt_required()
     def delete(self, review_id):
         """Delete a review"""
-        current_user = get_jwt_identity()
+        current_user = get_jwt()
+        review = facade.get_review(review_id)
+        if not review:
+            return {"error": "review does not exist."}, 404
+
+        if not current_user['is_admin'] or review.user_id != current_user['id']:
+            return {'error': 'Unauthorised action'}, 403
+
         try:
-            review = facade.get_review(review_id)
-            review_del = facade.get_review(review_id)
-            if not review:
-                return {"error": "review does not exist."}, 404
-            
+            facade.delete_review(review_id)
+            return {"message": "Review deleted successfully"}, 200
         except Exception as e:
-            return {"error": f"Not Found: {str(e)}"}, 404
-        facade.delete_review(review_id)
-        return {"message": "Review deleted successfully"}, 200
+            return {'error': str(e)}
+
 
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):
@@ -130,7 +130,6 @@ class PlaceReviewList(Resource):
     def get(self, place_id):
         """Get all reviews for a specific place"""
         try:
-
             place = facade.get_place(place_id)
             if not place:
                 return {"error": "Place not found"}, 404
