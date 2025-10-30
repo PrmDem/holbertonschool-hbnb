@@ -24,8 +24,8 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, nullable=False)
-    amenities = db.Column(db.List, nullable=True)
-    reviews = db.Column(db.List, nullable=True)
+    amenities = db.Column(db.String, nullable=True)
+    reviews = db.Column(db.String, nullable=True)
 
     def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None, reviews=None):
         super().__init__()
