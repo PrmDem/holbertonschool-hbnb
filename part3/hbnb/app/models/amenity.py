@@ -1,19 +1,27 @@
-from app.models.base_model import BaseModel
+from sqlalchemy.orm import validates
+from .base_model import BaseModel
+from app.extensions import db
 
 
 class Amenity(BaseModel):
+    """Instantiates or updates Amenity information.
+
+    Defines the attribute 'name' (str)
+
+    Creation and update times, as well as UUID,
+    are set via the call to BaseModel's init method.
+
+    """
+    __tablename__ = 'amenities'
+
+    name = db.Column(db.String(50), nullable=False)
+
     def __init__(self, name):
         super().__init__()
         self.name = name
 
-    @property
-    def name(self):
-        return self.__name
-
-    @name.setter
-    def name(self, v_name):
-        try:
-            if v_name and len(v_name) <= 50:
-                self.__name = v_name
-        except ValueError:
-            return {"ValueError": "Name must be between 1 and 50 characters"}, 400
+    @validates("name")
+    def validate_name(self, key, value):
+        if not value or len(value) > 50:
+            raise ValueError("Name must be between 1 and 50 characters")
+        return value
