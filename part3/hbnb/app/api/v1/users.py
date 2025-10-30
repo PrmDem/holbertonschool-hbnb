@@ -106,7 +106,7 @@ class AdminUserResource(Resource):
         """update user after verifying autorisations"""
         current_user = get_jwt()
         
-        # If 'is_admin' is part of the identity payload
+        # Checks if action is permitted for the user
         if not current_user.get('is_admin') or current_user.get('id') != user_id:
             return {'error': 'Unauthorised action'}, 403
 
@@ -122,6 +122,7 @@ class AdminUserResource(Resource):
             return {'error': 'invalid input data'}, 400
         return {'id': user_put.id, 'first_name': user_put.first_name, 'last_name': user_put.last_name, 'email': user_put.email}, 200
 
+
     @api.response(200, 'User deleted successfully')
     @api.response(404, 'User not found')
     @jwt_required()
@@ -129,7 +130,7 @@ class AdminUserResource(Resource):
         # retrieve user's id & permission level
         current_user = get_jwt()
         
-        # If 'is_admin' is part of the identity payload
+        # Checks if action is permitted for the user
         if not current_user.get('is_admin') or current_user.get('id') != user_id:
             return {'error': 'Unauthorised action'}, 403
 

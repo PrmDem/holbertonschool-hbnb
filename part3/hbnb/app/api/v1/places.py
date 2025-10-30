@@ -27,7 +27,7 @@ review_model = api.model('PlaceReview', {
 # Define the place model for input validation and documentation
 place_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
-    'description': fields.String(description='Description of the place'),
+    'description': fields.String(required=False, description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
@@ -67,6 +67,7 @@ class PlaceList(Resource):
             return {"error": str(e)}, 400
         except Exception as e:
             return {"error": f"Unexpected error: {str(e)}"}, 400
+
 
     @api.response(200, 'List of places retrieved successfully')
     @api.response(404, 'Places not found')
@@ -155,37 +156,20 @@ class PlaceResource(Resource):
     def put(self, place_id):
         """Update a place's information"""
         current_user = get_jwt()
+        try:
+            place = facade.get_place(place_id)
+        except Exception as e:
+            return {'error': str(e)}, 404
 
-        # Set is_admin default to False if not exists
-        is_admin = current_user.get('is_admin', False)
+        # Checks whether action is permitted for the user
         user_id = current_user.get('id')
-
-        place = facade.get_place(place_id)
-        if not is_admin and place.owner_id != user_id:
+        if not current_user.get('is_admin') and place.owner_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:
-            place_put = facade.get_place(place_id)
-            if not place_put:
-                return {"error": "Place not found"}, 404
-            if not is_admin and place_put.owner_id != current_user:
-                return {'error': 'Unauthorized action'}, 403
-            
-            required = ['title', 'price', 'description']
             place_data = api.payload
-
-            for r in required:
-                    if r not in place_data or place_data[r] in [None, ""]:
-                        return {"error": f"'{r}' field is required and cannot be empty"}, 400
-   
-            if place_data["price"] <= 0:
-                return {"error": "Price must be greater than 0"}, 400
-            if not isinstance(place_data, dict):
-                return {"error": "Invalid input data format"}, 400
-
             facade.update_place(place_id, place_data)
             return {"message": "Place updated successfully"}, 200
-
         except ValueError:
             return {"ValueError": "Invalid input data"}, 400
         except Exception as e:
@@ -210,4 +194,3 @@ class PlaceResource(Resource):
             return {'message': 'Place deleted successfully'}, 200
         except Exception as e:
             return {'error': str(e)}
-
