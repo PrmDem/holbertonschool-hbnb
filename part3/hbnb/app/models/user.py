@@ -1,3 +1,4 @@
+from sqlalchemy.orm import validates
 from .base_model import BaseModel
 from app.extensions import bcrypt
 from app import db
@@ -26,7 +27,7 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-"""
+
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         self.first_name = first_name
@@ -36,39 +37,25 @@ class User(BaseModel):
         self.is_admin = is_admin
         self.places = []
 
-    @property
-    def first_name(self):
-        return self.__first_name
-
-    @first_name.setter
-    def first_name(self, value):
-        if 0 < len(value) <= 50:
-            self.__first_name = value
-        else:
+    @validates("first_name")
+    def validate_first_name(self, key, value):
+        if not 0 < len(value) <= 50:
             raise ValueError("First name must be between 1 and 50 characters")
+        return value
 
-    @property
-    def last_name(self):
-        return self.__last_name
-
-    @last_name.setter
-    def last_name(self, value):
-        if 0 < len(value) <= 50:
-            self.__last_name = value
-        else:
+    @validates("last_name")
+    def validate_last_name(self, key, value):
+        if not 0 < len(value) <= 50:
             raise ValueError("Last name must be between 1 and 50 characters")
+        return value
 
-    @property
-    def email(self):
-        return self.__email
-
-    @email.setter
-    def email(self, value):
+    @validates("email")
+    def validate_email(self, key, value):
         if not value:
             raise ValueError("Email can t be empty")
         if not re.fullmatch(regex, value):
             raise ValueError("Invalid email format")
-        self.__email = value
+        return value
 
     def hash_password(self, password):
         # Hashes the password before storing it.
@@ -82,4 +69,3 @@ class User(BaseModel):
     def owned_places(self, place):
         # Add an owned place to the user
         self.places.append(place)
-"""
