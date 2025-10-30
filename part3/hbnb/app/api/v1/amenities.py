@@ -52,6 +52,7 @@ class AdminAmenityModify(Resource):
             return {"Error": "Bad Request"}, 404
         return {"id": amenity.id, "name": amenity.name}, 200
 
+
     @api.expect(amenity_model, validate=True)
     @api.response(200, 'Amenity updated successfully')
     @api.response(404, 'Amenity not found')
@@ -74,3 +75,23 @@ class AdminAmenityModify(Resource):
 
         amenity_put.name = amenity_data.get('name', amenity_put.name)
         return {"message": "Amenity updated successfully"}, 200
+
+
+    @api.response(200, 'Amenity deleted successfully')
+    @api.response(404, 'Amenity not found')
+    @jwt_required()
+    def delete(self, amenity_id):
+        """deletes an amenity if user has the autorisations"""
+        current_user = get_jwt()
+        current_amenity = facade.get_amenity(amenity_id)
+
+        if not current_amenity:
+            return {'error': 'Amenity not found'}, 404
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        try:
+            facade.delete_amenity(amenity_id)
+            return {'Message': 'Amenity deleted successfully'}, 200
+        except Exception as e:
+            return {'error': str(e)}, 404
