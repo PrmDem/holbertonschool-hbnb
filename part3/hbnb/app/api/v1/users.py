@@ -31,43 +31,11 @@ class UserCreate(Resource):
 
         try:
             new_user = facade.create_user(user_data)
-        except:
-            return {'error': 'User creation failed'}, 400
+        except Exception as e:
+            return {'error': str(e)}, 400
 
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
 
-@api.route('/admin')
-class AdminUserCreate(Resource):
-    """Class and endpoint used to create as Admin
-    As opposed to regular / from where users can be
-    created by non-admin;
-
-    This is to test our endpoints more easily
-    """
-    @api.expect(user_model, validate=True)
-    @api.response(201, 'User successfully created')
-    @api.response(400, 'Email already registered')
-    @api.response(400, 'Invalid input data')
-    @jwt_required()
-    def post(self):
-        current_user = get_jwt()
-        if not current_user.get('is_admin'):
-           return {'error': 'Admin privileges required'}, 403
-
-        user_data = api.payload
-        email = user_data.get('email')
-
-        # Check if email is already in use
-        if facade.get_user_by_email(email):
-            return {'error': 'Email already registered'}, 400
-
-        try:
-            new_user = facade.create_user(user_data)
-        except:
-            return {'error': 'User creation failed'}, 400
-
-        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
-    
     @api.response(200, 'list of user')
     @api.response(500, 'Internal server error')
     def get(self):
@@ -88,7 +56,6 @@ class AdminUserCreate(Resource):
         except Exception as e:
             return {"error": f"error user list: {str(e)}"}, 500
 
-
 @api.route('/admin')
 class AdminUserCreate(Resource):
     """Class and endpoint used to create as Admin
@@ -116,11 +83,10 @@ class AdminUserCreate(Resource):
 
         try:
             new_user = facade.create_user(user_data)
-        except:
-            return {'error': 'invalid input data'}, 400
+        except Exception as e:
+            return {'error': str(e)}, 400
 
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
-
 
 @api.route('/<user_id>')
 class AdminUserResource(Resource):
@@ -157,4 +123,4 @@ class AdminUserResource(Resource):
         except:
             return {'error': 'invalid input data'}, 400
         
-        return {'id': existing_user.id, 'first_name': existing_user.first_name, 'last_name': existing_user.last_name, 'email': existing_user.email}, 200
+        return {'id': user_put.id, 'first_name': user_put.first_name, 'last_name': user_put.last_name, 'email': user_put.email}, 200
