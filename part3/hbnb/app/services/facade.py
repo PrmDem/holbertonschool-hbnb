@@ -1,4 +1,3 @@
-from app.persistence.repository import SQLAlchemyRepository
 from app.services.repositories.user_repo import UserRepository
 from app.models.user import User
 from app.models.amenity import Amenity
@@ -36,7 +35,6 @@ class HBnBFacade:
         """
         return self.user_repo.update(user_id, user_obj)
 
-"""
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
@@ -85,4 +83,4 @@ class HBnBFacade:
 
     def delete_review(self, review_id):
         return self.review_repo.delete(review_id)
-"""
+
