@@ -157,4 +157,4 @@ class AdminUserResource(Resource):
         except:
             return {'error': 'invalid input data'}, 400
         
-        return {'id': existing_user.id, 'first_name': existing_user.first_name, 'last_name': existing_user.last_name, 'email': existing_user.email}, 200
+        return {'id': user_put.id, 'first_name': user_put.first_name, 'last_name': user_put.last_name, 'email': user_put.email}, 200
