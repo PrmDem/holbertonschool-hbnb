@@ -117,6 +117,11 @@ class UserResource(Resource):
             return {'error': 'User not found'}, 404
         
         user_data = api.payload
-        facade.update_user(user_id, user_data)
+
+        try:
+            facade.update_user(user_id, user_data)
+
+        except:
+            return {'error': 'invalid input data'}, 400
         
         return {'id': user_put.id, 'first_name': user_put.first_name, 'last_name': user_put.last_name, 'email': user_put.email}, 200
