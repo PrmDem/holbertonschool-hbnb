@@ -1,4 +1,7 @@
 from app.services.repositories.user_repo import UserRepository
+from app.services.repositories.place_repo import PlaceRepository
+from app.services.repositories.amenity_repo import AmenityRepository
+from app.services.repositories.review_repo import ReviewRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
@@ -7,9 +10,9 @@ from app.models.review import Review
 class HBnBFacade:
     def __init__(self):
         self.user_repo = UserRepository()
-        #self.place_repo = PlaceRepository()
-        #self.review_repo = ReviewRepository()
-        #self.amenity_repo = AmenityRepository()
+        self.place_repo = PlaceRepository()
+        self.review_repo = ReviewRepository()
+        self.amenity_repo = AmenityRepository()
 
     # Method for user creation
     def create_user(self, user_data):
@@ -24,15 +27,11 @@ class HBnBFacade:
         return self.user_repo.get_user_by_email(email)
 
     def all_users(self):
-        """
-        return all users
-        """
+        """return all users"""
         return self.user_repo.get_all()
 
     def update_user(self, user_id, user_obj):
-        """
-        update user with put
-        """
+        """update user with put"""
         return self.user_repo.update(user_id, user_obj)
 
     def create_amenity(self, amenity_data):
@@ -75,8 +74,7 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        reviews = [r for r in self.review_repo.get_all() if r.place_id == place_id]
-        return reviews
+        return self.review_repo.get_reviews_by_place(place_id)
 
     def update_review(self, review_id, review_data):
         return self.review_repo.update(review_id, review_data)
