@@ -1,9 +1,33 @@
-from app.models.base_model import BaseModel
-from sqlalchemy.orm import validates
 from app.services import facade
+from sqlalchemy.orm import validates
+from .base_model import BaseModel
+from app.extensions import bcrypt, db
+import uuid
 
 
 class Place(BaseModel):
+    """Instantiates or updates Place information.
+
+    Defines the following attributes:
+    title (str), description (str), owner_id (str)
+    price (float), latitude (float), longitude (float)
+    amenities (list), reviews (list)
+
+    Creation and update times, as well as UUID,
+    are set via the call to BaseModel's init method.
+
+    """
+    __tablename__ = 'users'
+
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(50), nullable=True)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    owner_id = db.Column(db.String, nullable=False)
+    amenities = db.Column(db.List, nullable=True)
+    reviews = db.Column(db.List, nullable=True)
+
     def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None, reviews=None):
         super().__init__()
         self.title = title
@@ -45,10 +69,19 @@ class Place(BaseModel):
             raise ValueError("Invalid user ID")
         return value
 
-    def add_review(self, review):
+    @validates("reviews")
+    def validate_add_review(self, key, review):
         """Add a review to the place."""
+        if (review not in all.id for all in facade.get_all_reviews()):
+            raise ValueError("Invalid review ID")
         self.reviews.append(review)
+        return self.reviews
 
-    def add_amenity(self, amenity):
-        """Add an amenity to the place."""
+    @validates("amenities")
+    def validate_add_amenitiy(self, key, amenity):
+        """Add a review to the place."""
+        if (amenity not in all.id for all in facade.get_all_amenities()):
+            raise ValueError("Invalid amenity ID")
         self.amenities.append(amenity)
+        return self.amenities
+    
