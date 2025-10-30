@@ -51,9 +51,15 @@ class User(BaseModel):
     @validates("email")
     def validate_email(self, key, value):
         if not value:
-            raise ValueError("Email can t be empty")
+            raise ValueError("Email cant be empty")
         if not re.fullmatch(regex, value):
             raise ValueError("Invalid email format")
+        return value
+    
+    @validates("is_admin")
+    def validate_is_admin(self, key, value):
+        if not isinstance(value, bool):
+            raise ValueError("Must be True or False")
         return value
 
     def hash_password(self, password):
