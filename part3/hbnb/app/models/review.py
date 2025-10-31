@@ -1,4 +1,4 @@
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from .base_model import BaseModel
 from app.extensions import db
 from app.services import facade
@@ -19,8 +19,13 @@ class Review(BaseModel):
 
     text = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    place_id = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.String, nullable=False)
+
+
+    place_id = db.Column(db.String(60), db.ForeignKey('places.id'), nullable=False)
+    user_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
+
+    place = relationship("Place", back_populates="reviews")
+    user = relationship("User", back_populates="reviews")
 
     def __init__(self, text, rating, place_id, user_id):
         super().__init__()
@@ -41,18 +46,14 @@ class Review(BaseModel):
             raise ValueError("Rating must be between 1 and 5")
         return value
 
-    @validates("place")
+    @validates("place_id")
     def validate_place(self, key, value):
         if not value:
             raise ValueError("Place ID cannot be empty")
-        if (value not in val for val in facade.get_all_places()):
-            raise ValueError(f"Place with ID {value} not found")
         return value
 
-    @validates("user")
+    @validates("user_id")
     def validate_user(self, key, value):
         if not value or value == "":
             raise ValueError("User ID cannot be empty")
-        if (value not in val for val in facade.all_users()):
-            raise ValueError(f"User with ID {value} not found")
         return value

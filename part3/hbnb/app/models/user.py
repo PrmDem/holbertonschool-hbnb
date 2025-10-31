@@ -1,4 +1,4 @@
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from .base_model import BaseModel
 from app.extensions import bcrypt, db
 import re
@@ -26,6 +26,9 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    places = relationship("Place", backref="owner", lazy=True, cascade="all, delete-orphan")
+    reviews = relationship("Review", backref="author", lazy=True, cascade="all, delete-orphan")
+
 
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
@@ -34,7 +37,6 @@ class User(BaseModel):
         self.email = email
         self.password = self.hash_password(password)
         self.is_admin = is_admin
-        self.places = []
 
     @validates("first_name")
     def validate_first_name(self, key, value):
