@@ -29,9 +29,11 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
-    reviews = relationship("Review", backref="owner", lazy=True, cascade="all, delete-orphan")
+
+    reviews = relationship("Review", backref="place", lazy=True, cascade="all, delete-orphan")
     amenities = relationship("Amenity", secondary=place_amenity, lazy='subquery',
-                             backref=db.backref('amenities', lazy=True))
+                             backref=db.backref('places', lazy=True))
+    owner = relationship("User", back_populates="places")
 
     def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
@@ -56,13 +58,13 @@ class Place(BaseModel):
 
     @validates("latitude")
     def validate_latitude(self, key, value):
-        if not isinstance(value, float) or -90.00 > value < 90.00:
+        if not isinstance(value, float) or not (-90.00 <= value <= 90.00):
             raise ValueError("Latitude must be between -90.00 and 90.00")
         return value
 
     @validates("longitude")
     def validate_longitude(self, key, value):
-        if not isinstance(value, float) or -180.00 > value < 180.00:
+        if not isinstance(value, float) or not (-180.00 <= value <= 180.00):
             raise ValueError("Longitude must be between -180.00 and 180.00")
         return value
 

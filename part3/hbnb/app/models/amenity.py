@@ -16,7 +16,7 @@ class Amenity(BaseModel):
 
     name = db.Column(db.String(50), nullable=False)
 
-    place = relationship("Place", back_populates="amenities")
+    places = relationship("Place", secondary="place_amenity", back_populates="amenities")
 
     def __init__(self, name):
         super().__init__()
