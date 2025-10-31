@@ -26,7 +26,7 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-    places = relationship("Place", backref="owner", lazy=True, cascade="all, delete-orphan")
+    places = relationship("Place", back_populates="owner", lazy=True, cascade="all, delete-orphan")
     reviews = relationship("Review", backref="author", lazy=True, cascade="all, delete-orphan")
 
 

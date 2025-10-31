@@ -30,9 +30,13 @@ class Place(BaseModel):
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
 
-    reviews = relationship("Review", backref="place", lazy=True, cascade="all, delete-orphan")
-    amenities = relationship("Amenity", secondary=place_amenity, lazy='subquery',
-                             backref=db.backref('places', lazy=True))
+    reviews = relationship("Review", back_populates="place", cascade="all, delete-orphan")
+    amenities = relationship(
+    "Amenity",
+    secondary="place_amenity",
+    back_populates="places",
+    lazy='subquery'
+)
     owner = relationship("User", back_populates="places")
 
     def __init__(self, title, description, price, latitude, longitude, owner_id):
@@ -71,7 +75,8 @@ class Place(BaseModel):
     @validates("owner_id")
     def validate_owner_id(self, key, value):
         from app.services import facade
-        if (value not in all.id for all in facade.all_users()):
+        all_users = facade.all_users()
+        if not any(user.id == value for user in all_users):
             raise ValueError("Invalid user ID")
         return value
 
