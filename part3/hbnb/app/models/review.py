@@ -1,7 +1,6 @@
 from sqlalchemy.orm import validates, relationship
 from .base_model import BaseModel
 from app.extensions import db
-from app.services import facade
 
 class Review(BaseModel):
     """Instantiates or updates Review information.
