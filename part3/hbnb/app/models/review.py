@@ -46,7 +46,7 @@ class Review(BaseModel):
         if not value:
             raise ValueError("Place ID cannot be empty")
         if (value not in val for val in facade.get_all_places()):
-            raise ValueError(f"Place with ID {value} not found")
+            raise ValueError("Place not found")
         return value
 
     @validates("user")
@@ -54,5 +54,5 @@ class Review(BaseModel):
         if not value or value == "":
             raise ValueError("User ID cannot be empty")
         if (value not in val for val in facade.all_users()):
-            raise ValueError(f"User with ID {value} not found")
+            raise ValueError("User not found")
         return value
