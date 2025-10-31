@@ -22,7 +22,7 @@ class Place(BaseModel):
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    owner_id = db.Column(db.String, nullable=False)
+    owner_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
 
     amenities = relationship("Amenity", backref="owner", lazy=True, cascade="all, delete-orphan")
     reviews = relationship("Review", backref="owner", lazy=True, cascade="all, delete-orphan")
@@ -67,9 +67,9 @@ class Place(BaseModel):
             raise ValueError("Invalid user ID")
         return value
 
+"""
     @validates("reviews")
     def validate_add_review(self, key, review):
-        """Add a review to the place."""
         from app.services import facade
         if (review not in all.id for all in facade.get_all_reviews()):
             raise ValueError("Invalid review ID")
@@ -78,10 +78,9 @@ class Place(BaseModel):
 
     @validates("amenities")
     def validate_add_amenitiy(self, key, amenity):
-        """Add an amenity to the place."""
         from app.services import facade
         if (amenity not in all.id for all in facade.get_all_amenities()):
             raise ValueError("Invalid amenity ID")
         self.amenities.append(amenity)
         return self.amenities
-    
+"""
