@@ -1,7 +1,13 @@
+from sqlalchemy import Table, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import validates, relationship
 from .base_model import BaseModel
 from app.extensions import db
 
+# Association table for many-to-many relationship between place & amenity
+place_amenity = db.Table('place_amenity',
+                         Column('place_id', String, ForeignKey('places.id'), primary_key=True),
+                         Column('amenity_id', String, ForeignKey('amenities.id'), primary_key=True)
+                         )
 
 class Place(BaseModel):
     """Instantiates or updates Place information.
@@ -23,9 +29,9 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
-
-    amenities = relationship("Amenity", backref="owner", lazy=True, cascade="all, delete-orphan")
     reviews = relationship("Review", backref="owner", lazy=True, cascade="all, delete-orphan")
+    amenities = relationship("Amenity", secondary=place_amenity, lazy='subquery',
+                             backref=db.backref('amenities', lazy=True))
 
     def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
