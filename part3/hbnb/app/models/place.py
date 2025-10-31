@@ -23,8 +23,8 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, nullable=False)
-    # amenities = db.Column(db.String, nullable=True)
-    # reviews = db.Column(db.String, nullable=True)
+    # amenities = db.Column(db.String, nullable=True, ForeignKey=True)
+    # reviews = db.Column(db.String, nullable=True, ForeignKey=True)
 
     def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None, reviews=None):
         super().__init__()
@@ -46,7 +46,7 @@ class Place(BaseModel):
     @validates("price")
     def validate_price(self, key, value):
         if not isinstance(value, float) or value < 0:
-            raise ValueError("Price must be a positive number")
+            raise ValueError("Price must be a positive number, eg '120.0'")
         return value
 
     @validates("latitude")
