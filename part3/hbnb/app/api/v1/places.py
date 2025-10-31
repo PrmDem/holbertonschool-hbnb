@@ -32,7 +32,7 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
+    'amenities': fields.List(fields.String, description="List of amenities ID's"),
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
@@ -44,14 +44,13 @@ class PlaceList(Resource):
     @jwt_required()
     def post(self):
         """Create a new place"""
-        current_user = get_jwt_identity()
+        current_user = get_jwt()
+
+        if not current_user.get('is_admin'):
+            return {'error': 'Unauthorised action'}, 403
+
         try:
             place_data = api.payload
-
-            required = ['title', 'price', 'latitude', 'longitude', 'owner_id', 'description']
-            for r in required:
-                if r not in place_data or place_data[r] in [None, ""]:
-                    return {"error": f"'{r}' field is required and cannot be empty"}, 400
 
             new_place = facade.create_place(place_data)
             return {

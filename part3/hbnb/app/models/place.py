@@ -1,4 +1,3 @@
-from app.services import facade
 from sqlalchemy.orm import validates
 from .base_model import BaseModel
 from app.extensions import db
@@ -24,8 +23,8 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, nullable=False)
-    amenities = db.Column(db.String, nullable=True)
-    reviews = db.Column(db.String, nullable=True)
+    # amenities = db.Column(db.String, nullable=True)
+    # reviews = db.Column(db.String, nullable=True)
 
     def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None, reviews=None):
         super().__init__()
@@ -35,8 +34,8 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
         self.owner_id = owner_id
-        self.amenities = amenities if amenities is not None else []
-        self.reviews = reviews if reviews is not None else []
+        # self.amenities = amenities if amenities is not None else []
+        # self.reviews = reviews if reviews is not None else []
 
     @validates("title")
     def validate_title(self, key, value):
@@ -64,23 +63,27 @@ class Place(BaseModel):
 
     @validates("owner_id")
     def validate_owner_id(self, key, value):
-        if (value not in all.id for all in facade.all_users()):
+        from app.services import facade
+        if not facade.get_user(value):
             raise ValueError("Invalid user ID")
         return value
 
+"""
+    @validates("amenities")
+    def validate_add_amenity(self, key, amenity):
+        # Add an amenity to the place.
+        from app.services import facade
+        if not facade.get_amenity(amenity):
+            raise ValueError("Invalid amenity ID")
+        self.amenities.append(amenity)
+        return self.amenities
+
     @validates("reviews")
     def validate_add_review(self, key, review):
-        """Add a review to the place."""
+        # Add a review to the place.
+        from app.services import facade
         if (review not in all.id for all in facade.get_all_reviews()):
             raise ValueError("Invalid review ID")
         self.reviews.append(review)
         return self.reviews
-
-    @validates("amenities")
-    def validate_add_amenitiy(self, key, amenity):
-        """Add an amenity to the place."""
-        if (amenity not in all.id for all in facade.get_all_amenities()):
-            raise ValueError("Invalid amenity ID")
-        self.amenities.append(amenity)
-        return self.amenities
-    
+"""

@@ -90,11 +90,12 @@ class ReviewResource(Resource):
     @jwt_required()
     def put(self, review_id):
         """Update a review's information"""
-        current_user = get_jwt_identity()
+        current_user = get_jwt()
+
         try:
             review_put = facade.get_review(review_id)
             review_data = api.payload
-            if review_put.owner_id != current_user:
+            if review_put.owner_id != current_user and not current_user['is_admin']:
                 return {'error': 'Unauthorized action'}, 403
             facade.update_review(review_id, review_data)
             return {"message": "Review updated successfully"}, 200
@@ -113,7 +114,7 @@ class ReviewResource(Resource):
         if not review:
             return {"error": "review does not exist."}, 404
 
-        if not current_user['is_admin'] or review.user_id != current_user['id']:
+        if not current_user.get('is_admin') and review.user_id != current_user.get('id'):
             return {'error': 'Unauthorised action'}, 403
 
         try:
