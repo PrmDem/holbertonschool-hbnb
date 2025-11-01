@@ -1,6 +1,6 @@
 CREATE TABLE User (
 
-    id CHAR(36) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     email VARCHAR(255) UNIQUE,
@@ -10,7 +10,7 @@ CREATE TABLE User (
 
 CREATE TABLE Place (
 
-    id CHAR(36) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     title VARCHAR(255),
     description TEXT,
     price DECIMAL(10, 2),
@@ -22,7 +22,7 @@ CREATE TABLE Place (
 
 CREATE TABLE Review (
 
-    id CHAR(36) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     text TEXT,
     rating INT CHECK (rating >= 1 AND rating <= 5),
     user_id CHAR(36),
@@ -34,7 +34,7 @@ CREATE TABLE Review (
 
 CREATE TABLE Amenity (
 
-    id CHAR(36) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255) UNIQUE
 );
 
@@ -46,4 +46,3 @@ CREATE TABLE Place_Amenity (
     FOREIGN KEY (place_id) REFERENCES Place(id) ON DELETE CASCADE,
     FOREIGN KEY (amenity_id) REFERENCES Amenity(id) ON DELETE CASCADE
 );
-
