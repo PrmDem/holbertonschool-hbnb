@@ -12,19 +12,20 @@ INSERT INTO
     )
 VALUES
     (
-        UUID(),
+        LOWER(HEX(RANDOMBLOB(16))),
         'John',
         'Doe',
         'john.doe@example.com',
-        SHA2('passwurd123', 256),
+        'hashed_pass',
         false
     ),
     (
-        UUID(),
+        LOWER(HEX(RANDOMBLOB(16))),
         'Alice',
         'Smith',
         'alice.smith@example.com',
-        SHA2('passwird456', 256)
+        'hashed_pass',
+        false
     );
 
 -- Verify users were created
@@ -47,8 +48,8 @@ INSERT INTO
     )
 VALUES
     (
-        UUID(),
-        'Cozy beach house',
+        LOWER(HEX(RANDOMBLOB(16))),
+        'Cozy Beach House',
         'Clean, comfortable spot.',
         175.00,
         36.738,
@@ -73,8 +74,8 @@ FROM
 INSERT INTO
     amenities (id, name)
 VALUES
-    (UUID(), 'Dishwasher'),
-    (UUID(), 'Barbecue');
+    (LOWER(HEX(RANDOMBLOB(16))), 'Dishwasher'),
+    (LOWER(HEX(RANDOMBLOB(16))), 'Barbecue');
 
 -- Verify Amenities were created successfully
 SELECT
@@ -106,7 +107,7 @@ INSERT INTO
     reviews (id, text, rating, user_id, place_id)
 VALUES
     (
-        UUID(),
+        LOWER(HEX(RANDOMBLOB(16))),
         'Very clean and comfortable place!',
         5,
         (
