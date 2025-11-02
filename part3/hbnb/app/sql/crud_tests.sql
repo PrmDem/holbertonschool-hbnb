@@ -16,7 +16,7 @@ VALUES
         'John',
         'Doe',
         'john.doe@example.com',
-        'hashed_pass',
+        '$2a$12$fJJObLxy/O4pTiv4.n839etfSomYkgtwNgQRhK.oJ0hFZqYfFV0zS',
         false
     ),
     (
@@ -24,7 +24,7 @@ VALUES
         'Alice',
         'Smith',
         'alice.smith@example.com',
-        'hashed_pass',
+        '$2a$12$MQYx0wuPN0oUnqTS/VhIJO1Tl1l9huPVcUzzZ9lnTSFYRUyDYpvM.',
         false
     );
 
