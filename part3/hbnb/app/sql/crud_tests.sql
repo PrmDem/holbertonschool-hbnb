@@ -1,6 +1,7 @@
 -- Tests for CRUD methods
 -- CREATE tests begin here
 -- Creates Users
+-- Commande lanch test: sqlite3 part3/hbnb/instance/development.db < part3/hbnb/app/sql/crud_tests.sql
 INSERT INTO
     users (
         id,
