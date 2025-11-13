@@ -155,7 +155,7 @@ class PlaceResource(Resource):
 
         # Set is_admin default to False if not exists
         is_admin = current_user.get('is_admin', False)
-        user_id = current_user.get('id')
+        user_id = get_jwt_identity()
 
         place = facade.get_place(place_id)
         if not is_admin and place.owner_id != user_id:
@@ -173,8 +173,8 @@ class PlaceResource(Resource):
             place_data = api.payload
 
             for r in required:
-                    if r not in place_data or place_data[r] in [None, ""]:
-                        return {"error": f"'{r}' field is required and cannot be empty"}, 400
+                if r not in place_data or place_data[r] in [None, ""]:
+                    return {"error": f"'{r}' field is required and cannot be empty"}, 400
                     
             if place_data["price"] <= 0:
                 return {"error": "Price must be greater than 0"}, 400
