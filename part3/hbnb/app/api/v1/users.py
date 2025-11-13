@@ -1,4 +1,4 @@
-from flask_jwt_extended import jwt_required, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 
@@ -36,7 +36,7 @@ class UserCreate(Resource):
 
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
 
-    @api.response(200, 'list of user')
+    @api.response(200, 'list of users')
     @api.response(500, 'Internal server error')
     def get(self):
         """
@@ -105,25 +105,36 @@ class AdminUserResource(Resource):
     @jwt_required()
     def put(self, user_id):
         """update user after verifying autorisations"""
-        current_user = get_jwt()
+        current_user = get_jwt_identity()
         
         # If 'is_admin' is part of the identity payload
         is_admin = current_user.get('is_admin', False)
+        # If the user is modifying their own profile
         is_owner = current_user.get('id') == user_id
         
+        # Refuses input from unauthorised users
         if not (is_admin or is_owner):
             return {'error': 'Unauthorised action'}, 403
 
+        # Gets the user's profile information
         user_put = facade.get_user(user_id)
         if not user_put:
             return {'error': 'User not found'}, 404
         
+        # Get the incoming information
         user_data = api.payload
 
+        # Ensures email and password can't be changed by anyone other than the user
+        if ((current_user.get('id') != user_id) and (
+                (user_data.email != user_put.email) or 
+                (user_data.password != user_put.password)
+            )):
+            return {'error': 'You cannot modify email or password'}, 400
+
+        # updates user info
         try:
             facade.update_user(user_id, user_data)
-
         except:
             return {'error': 'invalid input data'}, 400
-        
+
         return {'id': user_put.id, 'first_name': user_put.first_name, 'last_name': user_put.last_name, 'email': user_put.email}, 200
