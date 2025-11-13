@@ -94,8 +94,9 @@ class ReviewResource(Resource):
         try:
             review_put = facade.get_review(review_id)
             review_data = api.payload
-            #if review_put.owner_id != current_user:
-                #return {'error': 'Unauthorized action'}, 403
+
+            if review_put.owner_id != current_user:
+                return {'error': 'Unauthorized action'}, 403
 
             review_put.text = review_data.get('text', review_put.text)
             review_put.rating = review_data.get('rating', review_put.rating)
