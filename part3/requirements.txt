@@ -4,3 +4,5 @@ flask-bcrypt
 sqlalchemy
 flask-sqlalchemy
 flask-jwt-extended
+greenlet==3.2.4
+SQLAlchemy==1.4.22
