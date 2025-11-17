@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="#">
+                <img src="images/logo.png" alt="HBnB logo" height="160" width="45">
+            </a>
+        </div>
+        <!-- Navbar -->
+        <nav>
+            <a href="/" id="home-link">Home</a>
+            <a href="/login" id="login-link">Login</a>
+        </nav>
+    </header>
+    <main>
+        <section id="place-details">
+            <div class="place-details">
+                <!-- Place details will be populated dynamically -->
+                <h2 class="place-name">Lindblum Inn</h2>
+                <div class="place-info">
+                    <p class="host-name">Your graceful host</p>
+                    <p class="price">500 gil</p>
+                    <p class="description">A lovely inn</p>
+                    <p class="amenities">Stuff and things, maybe breakfast</p>
+                </div>
+            </div>
+        </section>
+        <!-- Reviews start here -->
+        <section id="reviews">
+            <h2>Reviews for this place:</h2>
+            <div class="review-card">
+                <blockquote class="comment">A long rant from one unhappy customer.
+                    <cite class="username">Lani</cite>
+                </blockquote>
+                <!-- rating would go here idk how tho -->
+            </div>
+        </section>
+        <!-- Review form starts here -->
+        <section id="add-review">
+            <h2>Add a Review</h2>
+            <form id="review-form">
+                <label for="review-text">Review:</label>
+                <textarea id="review-text" name="review-text" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p class="disclaimer">All rights reserved.</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
