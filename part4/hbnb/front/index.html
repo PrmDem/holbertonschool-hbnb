@@ -11,49 +11,55 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="logo">
-            <a href="#">
-                <img src="images/logo.png" alt="HBnB logo" height="160" width="45">
-            </a>
-        </div>
-        <!-- Navbar -->
-        <div>
-            <nav>
-                <a href="/" id="home-link">Home</a>
-                <a href="/login" id="login-link">Login</a>
-            </nav>
+        <div class="container" id="headerCont">
+            <div class="logo">
+                <a href="#">
+                    <img src="images/logo.png" alt="HBnB logo">
+                </a>
+            </div>
+            <!-- Navbar -->
+            <div class="nav-bar">
+                <ul class="nav-links">
+                    <li><a href="index.html" id="home-link">Home</a></li>
+                    <li><a href="login.html" id="login-link">Login</a></li>
+                </ul>
+            </div>
         </div>
     </header>
     <main>
         <section id="filter">
-            <h2>Find your dream place</h2>
-            <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <!-- Options will be populated dynamically -->
-            </select>
-            <label for="local-filter">Localisation:</label>
-            <select id="local-filter">
-                <!-- Options will be populated dynamically -->
-            </select>
+            <div class="container">
+                <h2>Find your dream place</h2>
+                <label for="price-filter">Max Price:</label>
+                <select id="price-filter">
+                    <!-- Options will be populated dynamically -->
+                </select>
+                <label for="local-filter">Localisation:</label>
+                <select id="local-filter">
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
         </section>
         <section id="places-list">
-            <h2>Our most sought after spots</h2>
-            <!-- List of places will be populated dynamically -->
-            <ul class="row"></ul>
-            <article class="place-card">
-                <div class="photo">
-                    <!-- <img src="#" height="123px" width="45px" alt=""> -->
-                </div>
-                <div class="place-info">
-                    <h3 class="name">Title of the place</h3>
-                    <p class="price"></p>
-                </div>
-                <button class="details-button">View details</button>
-            </article>
+            <div class="container">
+                <h2 class="hidden">Our most sought after spots</h2>
+                <!-- List of places will be populated dynamically -->
+                <ul class="row"></ul>
+                <article class="place-card">
+                    <div class="photo">
+                        <img src="images/CondePetieInn.jpg" alt="">
+                    </div>
+                    <div class="place-info">
+                        <h3 class="name">Conde Petie Inn</h3>
+                        <p class="price">80 gils/night</p>
+                    </div>
+                    <button class="details-button">View details</button>
+                </article>
+            </div>
         </section>
     </main>
     <footer>
-        <p class="disclaimer">All rights reserved.</p>
+        <p>© 2025 HBnB - All rights reserved.</p>
     </footer>
     <script src="scripts.js"></script>
 </body>

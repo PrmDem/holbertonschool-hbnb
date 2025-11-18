@@ -10,27 +10,34 @@
 
 <body>
     <header>
-        <div class="logo">
-            <a href="#">
-                <img src="images/logo.png" alt="HBnB logo" height="160" width="45">
-            </a>
+        <div class="container" id="headerCont">
+            <div class="logo">
+                <a href="#">
+                    <img src="images/logo.png" alt="HBnB logo">
+                </a>
+            </div>
+            <!-- Navbar -->
+            <div class="nav-bar">
+                <ul class="nav-links">
+                    <li><a href="/" id="home-link">Home</a></li>
+                    <li><a href="login.html" id="login-link">Login</a></li>
+                </ul>
+            </div>
         </div>
-        <!-- Navbar -->
-        <nav>
-            <a href="/" id="home-link">Home</a>
-            <a href="/login" id="login-link">Login</a>
-        </nav>
     </header>
     <main>
         <section id="place-details">
             <div class="place-details">
                 <!-- Place details will be populated dynamically -->
-                <h2 class="place-name">Lindblum Inn</h2>
+                <h2 class="place-name">Dali Inn</h2>
+                <img src="images/dali-inn_02.png"
+                    alt="Rays of sunlight illuminate a small round room, furnished with four identical beds.">
                 <div class="place-info">
-                    <p class="host-name">Your graceful host</p>
-                    <p class="price">500 gil</p>
-                    <p class="description">A lovely inn</p>
-                    <p class="amenities">Stuff and things, maybe breakfast</p>
+                    <p class="host-name"><b>Host: </b>Innkeeper Kuta</p>
+                    <p class="price"><b>Price per night: </b>100 gil</p>
+                    <p class="description">Ideally situated in the quiet village of Dali.<br />You will love the natural
+                        sunlight and homemade breakfast!</p>
+                    <p class="amenities"><b>Provided: </b>Washing basin, books, color fortunes.</p>
                 </div>
             </div>
         </section>
@@ -38,10 +45,11 @@
         <section id="reviews">
             <h2>Reviews for this place:</h2>
             <div class="review-card">
-                <blockquote class="comment">A long rant from one unhappy customer.
-                    <cite class="username">Lani</cite>
+                <span class="rating">4.5 ♥</span>
+                <blockquote class="comment">
+                    <p>It was my first time seeing windmills!<br />Also, I got kidnapped.</p>
+                    <cite class="reviewer">— Vivi</cite>
                 </blockquote>
-                <!-- rating would go here idk how tho -->
             </div>
         </section>
         <!-- Review form starts here -->
@@ -55,7 +63,7 @@
         </section>
     </main>
     <footer>
-        <p class="disclaimer">All rights reserved.</p>
+        <p class="disclaimer">© 2025 HBnB - All rights reserved.</p>
     </footer>
     <script src="scripts.js"></script>
 </body>

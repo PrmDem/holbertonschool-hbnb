@@ -1,40 +1,154 @@
-/* 
-  This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks. 
-  You'll probably need to override some of theese styles.
-*/
+@font-face {
+    font-family: Alexandria;
+    src: url('../fonts/Alexandria.ttf') format('truetype');
+}
 
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Montserrat", Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 90%;
 }
 
 body {
     background-color: #f4f4f4;
     color: #333;
+    line-height: 1.5;
+}
+
+:is(h1, h2, h3) {
+    font-family: "Alexandria", Arial;
+    text-align: center;
 }
 
 header {
     background-color: #4c4c4c;
     color: #fff;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
-nav a {
+#headerCont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.container {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo {
+    width: fit-content;
+}
+
+.logo img {
+    height: 75px;
+}
+
+.nav-bar {
+    position: relative;
+    width: fit-content;
+}
+
+.nav-links li {
+    list-style: none;
+    display: inline-flex;
+}
+
+.nav-links a {
     color: #fff;
+    font-family: "Alexandria", serif;
+    font-size: 110%;
     text-decoration: none;
-    margin-left: 1rem;
+    margin: 10px;
+    padding: 1;
+}
+
+nav a:hover {
+    background-color: rgb(181, 183, 177);
+    color: #333;
+    padding: 2px 3px;
+}
+
+.hidden {
+    display: none;
 }
 
 main {
     padding: 2rem;
 }
 
+section {
+    padding: 1rem 0 0 5rem;
+}
+
+#filter {
+    margin: 1rem 2rem 2rem;
+    font-size: 16px;
+    text-align: center;
+}
+
+#filter h2 {
+    /* ajouter aussi pour section id reviews */
+    font-size: 25px;
+}
+
+#price-filter {
+    margin-right: 1.5rem;
+}
+
 .place-card,
 .review-card {
-    margin: 20px;
+    float: auto;
+    width: fit-content;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
+}
+
+#place-details,
+#reviews {
+    position: relative;
+    margin-left: 30%;
+}
+
+.place-card .place-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.place-card .place-name {
+    margin-top: .8rem;
+}
+
+.place-card .price {
+    text-align: center;
+    font-size: 15px;
+}
+
+.place-card .details-button {
+    background-color: #4c4c4c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 1% 33.33% 5%;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #4c4c4c;
+    padding: 1.5rem 0 0;
+}
+
+footer p {
+    font-family: "Alexandria", serif;
+    text-align: center;
+    color: #ddd;
+    padding-bottom: 3rem;
 }
