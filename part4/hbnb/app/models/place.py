@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import validates, relationship
 from .base_model import BaseModel
 from app.extensions import db
@@ -24,10 +24,12 @@ class Place(BaseModel):
     __tablename__ = 'places'
 
     title = db.Column(db.String(100), nullable=False)
+    picture = db.Column(db.String(100), nullable=True)
     description = db.Column(db.String(50), nullable=True)
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    location = db.Column(db.String(100), nullable=True)
     owner_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
 
     reviews = relationship("Review", back_populates="place", cascade="all, delete-orphan")
@@ -39,19 +41,27 @@ class Place(BaseModel):
 )
     owner = relationship("User", back_populates="places")
 
-    def __init__(self, title, description, price, latitude, longitude, owner_id):
+    def __init__(self, title, picture, description, price, latitude, longitude, location, owner_id):
         super().__init__()
         self.title = title
+        self.picture = picture
         self.description = description
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
+        self.location = location,
         self.owner_id = owner_id
 
     @validates("title")
     def validate_title(self, key, value):
         if not value or len(value) > 100:
             raise ValueError("Title must be between 1 and 100 characters")
+        return value
+
+    @validates("picture")
+    def validate_picture(self, key, value):
+        if not value or len(value) > 100:
+            raise ValueError("Picture must be in the same or direct parent folder")
         return value
 
     @validates("price")
@@ -71,6 +81,12 @@ class Place(BaseModel):
         if not isinstance(value, float) or not (-180.00 <= value <= 180.00):
             raise ValueError("Longitude must be between -180.00 and 180.00")
         return value
+    
+    @validates("location")
+    def validate_location(self, key, value):
+        if not isinstance(value, str):
+            raise ValueError("Location must be a string")
+        return value
 
     @validates("owner_id")
     def validate_owner_id(self, key, value):
@@ -80,7 +96,6 @@ class Place(BaseModel):
             raise ValueError("Invalid user ID")
         return value
 
-"""
     @validates("reviews")
     def validate_add_review(self, key, review):
         from app.services import facade
@@ -96,4 +111,3 @@ class Place(BaseModel):
             raise ValueError("Invalid amenity ID")
         self.amenities.append(amenity)
         return self.amenities
-"""

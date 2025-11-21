@@ -2,7 +2,6 @@ from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 
-api = Namespace('users', description='User operations')
 api = Namespace('admin', description='Admin operations')
 
 # Define the user model for input validation and documentation
@@ -14,7 +13,7 @@ user_model = api.model('User', {
     'is_admin': fields.Boolean(required=True, description='Permission level of the user')
 })
 
-@api.route('/')
+@api.route('/', strict_slashes=False)
 class AdminUserCreate(Resource):
     """Class and endpoint used to create a user
     Only administrators have authorisation
@@ -64,7 +63,7 @@ class AdminUserCreate(Resource):
             return {"error": f"error user list: {str(e)}"}, 500
 
 
-@api.route('/<user_id>')
+@api.route('/<user_id>', strict_slashes=False)
 class AdminUserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')

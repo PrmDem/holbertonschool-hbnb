@@ -9,7 +9,7 @@ amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
 
-@api.route('/')
+@api.route('/', strict_slashes=False)
 class AdminAmenityCreate(Resource):
     @api.expect(amenity_model)
     @api.response(201, 'Amenity successfully created')
@@ -41,7 +41,7 @@ class AdminAmenityCreate(Resource):
         return amenities_list, 200
 
 
-@api.route('/<amenity_id>')
+@api.route('/<amenity_id>', strict_slashes=False)
 class AdminAmenityModify(Resource):
     @api.response(200, 'Amenity details retrieved successfully')
     @api.response(404, 'Amenity not found')

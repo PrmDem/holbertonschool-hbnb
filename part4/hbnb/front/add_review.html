@@ -9,6 +9,21 @@
 </head>
 
 <body>
+    <header>
+        <div class="container" id="headerCont">
+            <div class="logo">
+                <img src="images/logo.png" alt="HBnB logo">
+            </div>
+            <!-- Navbar -->
+            <div class="nav-bar">
+                <ul class="nav-links">
+                    <li id="home-link"><a href="index.html">Home</a></li>
+                    <li id="login-link"><a href="login.html">Login</a></li>
+                    <li id="res-link"><a href="credits.html">Credits</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
     <main>
         <!-- Add something to identify the place you're reviewing -->
         <form id="review-form">
@@ -17,12 +32,20 @@
             <textarea id="review" name="review" required></textarea>
             <label for="rating">Rating:</label>
             <select id="rating" name="rating" required>
-                <!-- Options for rating -->
+                <option><img src="images/favicons/ore-icon.ico"> 1</option>
+                <option><img src="images/favicons/garnet.ico"> 2</option>
+                <option><img src="images/favicons/sapphire.ico"> 3</option>
+                <option><img src="images/favicons/emerald-icon.ico"> 4</option>
+                <option><img src="images/favicons/diamond-icon.ico"> 5</option>
             </select>
             <button type="submit">Submit Review</button>
         </form>
     </main>
-    <script src="scripts.js"></script>
+    <footer>
+        <p>© 2025 HBnB - All rights reserved.</p>
+    </footer>
+    <script src="login-form.js"></script>
+    <script src="review-form.js"></script>
 </body>
 
 </html>

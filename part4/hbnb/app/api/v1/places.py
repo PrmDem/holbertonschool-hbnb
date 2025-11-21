@@ -27,16 +27,18 @@ review_model = api.model('PlaceReview', {
 # Define the place model for input validation and documentation
 place_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
+    'picture': fields.String(description='Picture of the place'),
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
+    'location': fields.String(description='Continent on which the place is located'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
     'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
-@api.route('/')
+@api.route('/', strict_slashes=False)
 class PlaceList(Resource):
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
@@ -44,11 +46,14 @@ class PlaceList(Resource):
     @jwt_required()
     def post(self):
         """Create a new place"""
-        current_user = get_jwt_identity()
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+           return {'error': 'Admin privileges required'}, 403
+
         try:
             place_data = api.payload
 
-            required = ['title', 'price', 'latitude', 'longitude', 'owner_id', 'description']
+            required = ['title', 'price', 'latitude', 'longitude', 'owner_id']
             for r in required:
                 if r not in place_data or place_data[r] in [None, ""]:
                     return {"error": f"'{r}' field is required and cannot be empty"}, 400
@@ -57,10 +62,12 @@ class PlaceList(Resource):
             return {
                     'id': new_place.id,
                     'title': new_place.title,
+                    'picture': new_place.picture,
                     'description': new_place.description,
                     'price': new_place.price,
                     'latitude': new_place.latitude,
                     'longitude': new_place.longitude,
+                    'location': new_place.location,
                     'owner_id': new_place.owner_id
                 }, 201
         except ValueError as e:
@@ -78,14 +85,18 @@ class PlaceList(Resource):
             all_places = [{
                 'id': place.id,
                 'title': place.title,
+                'picture': place.picture,
+                'description': place.description,
+                'price': place.price,
                 'latitude': place.latitude,
                 'longitude': place.longitude,
+                'location': place.location
             } for place in places]
             return all_places, 200
         except Exception as e:
             return {"Error": f"{str(e)}"}, 404
 
-@api.route('/<place_id>')
+@api.route('/<place_id>', strict_slashes=False)
 class PlaceResource(Resource):
     @api.response(200, 'Place details retrieved successfully')
     @api.response(404, 'Place not found')
@@ -108,37 +119,31 @@ class PlaceResource(Resource):
             else:
                 owner_data = None
         
-            amenities_data = []
-            amenity_ids = place.amenities if place.amenities else []
+            amenities = place.amenities
+            reviews = place.reviews
             
-            for amenity_id in amenity_ids: 
-                a = facade.get_amenity(amenity_id)
-                if a:
-                    amenities_data.append({"id": a.id, "name": a.name})
-
-            reviews_data = []
-            review_ids = place.reviews if place.reviews else []
-            
-            for review_id in review_ids: 
-                r = facade.get_review(review_id)
-                if r:
-                    reviews_data.append({
+            return {
+                "id": place.id,
+                "title": place.title,
+                "picture": place.picture,
+                "description": place.description,
+                "price": place.price,
+                "latitude": place.latitude,
+                "longitude": place.longitude,
+                "location": place.location,
+                "owner": owner_data,
+                "amenities": [
+                    {"id": a.id,
+                    "name": a.name}
+                    for a in amenities
+                ],
+                "reviews": [{
                         "id": r.id,
                         "text": r.text,
                         "rating": r.rating,
                         "user_id": r.user_id,
                         "place_id": r.place_id
-                    })
-            
-            return {
-                "id": place.id,
-                "title": place.title,
-                "description": place.description,
-                "latitude": place.latitude,
-                "longitude": place.longitude,
-                "owner": owner_data,
-                "amenities": amenities_data,
-                "reviews": reviews_data
+                    } for r in reviews]
             }, 200
         
         except Exception as e:
@@ -183,10 +188,12 @@ class PlaceResource(Resource):
                 return {"error": "Invalid input data format"}, 400
             
             place_put.title = place_data.get('title', place_put.title)
+            place_put.picture = place_data.get('picture', place_put.picture)
             place_put.description = place_data.get('description', place_put.description)
             place_put.price = place_data.get('price', place_put.price)
             place_put.latitude = place_data.get('latitude', place_put.latitude)
             place_put.longitude = place_data.get('longitude', place_put.longitude)
+            place_put.location = place_data.get('location', place_put.location)
             place_put.owner_id = place_data.get('owner_id', place_put.owner_id)
             place_put.amenities = place_data.get('amenities', place_put.amenities)
             place_put.reviews = place_data.get('reviews', place_put.reviews)
