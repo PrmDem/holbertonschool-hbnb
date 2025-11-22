@@ -137,12 +137,16 @@ class PlaceResource(Resource):
                     "name": a.name}
                     for a in amenities
                 ],
-                "reviews": [{
+                "reviews": [
+                    {
                         "id": r.id,
                         "text": r.text,
                         "rating": r.rating,
-                        "user_id": r.user_id,
-                        "place_id": r.place_id
+                        "user": {
+                            "id": r.user.id,
+                            "first_name": r.user.first_name,
+                            "last_name": r.user.last_name
+                        }
                     } for r in reviews]
             }, 200
         
