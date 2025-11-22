@@ -21,11 +21,9 @@ class ReviewList(Resource):
     @jwt_required()
     def post(self):
         """Register a new review"""
-        current_user = get_jwt_identity()
         try:
+            current_user = get_jwt_identity()
             review_data = api.payload
-            if not review_data.get('user_id'):
-                return {"error": "user id must not be empty"}, 400
             if not review_data.get('place_id'):
                 return {"error": "place id must not be empty"}, 400
             review_place = facade.get_place(review_data.get('place_id'))
@@ -37,14 +35,14 @@ class ReviewList(Resource):
             if facade.compare_review(current_user, review_data['place_id']):
                 return {'error': 'You have already reviewed this place.'}, 400
             
+            review_data.update({'user_id': current_user})
             new_review = facade.create_review(review_data)
-            
 
             return {
                 'id': new_review.id, 
                 'text': new_review.text, 
                 'rating': new_review.rating,
-                'user_id': new_review.user_id,
+                'user_id': current_user,
                 'place_id': new_review.place_id,
             }, 201
         except ValueError as e:
