@@ -55,7 +55,9 @@ header {
 }
 
 #headerCont {
+    width: inherit;
     display: flex;
+    flex-flow: row;
     flex-wrap: wrap;
     justify-content: space-between;
 }
@@ -75,13 +77,15 @@ header {
 }
 
 .nav-bar {
-    position: relative;
+    position: sticky;
     width: fit-content;
 }
 
 .nav-links li {
     list-style: none;
     display: inline-flex;
+    flex-wrap: wrap-reverse;
+    position: relative;
 }
 
 .nav-links a {
@@ -132,12 +136,17 @@ section {
 }
 
 #places-list {
-    display: grid;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    left: auto;
+    right: auto;
 }
 
 .place-card {
     width: 310px;
     height: fit-content;
+    margin-left: 1rem;
 }
 
 .review-card,
