@@ -80,7 +80,7 @@ async function displayReviews(allReviews) {
     revContents.innerHTML = `
     <p id="rating">${rev.rating}</p>
     <blockquote class="review-body">${rev.text}<br/><br/>
-    <cite class="reviewer">${rev.username}</cite>
+    <cite class="reviewer">${rev.user.first_name}</cite>
     </blockquote>
     `;
     revSection.appendChild(revContents);
