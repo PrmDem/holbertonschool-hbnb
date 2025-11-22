@@ -27,16 +27,16 @@
     <main>
         <!-- Add something to identify the place you're reviewing -->
         <form id="review-form">
-            <h2>Add a Review</h2>
+            <h2 id="review-where"></h2>
             <label for="review">Your Review:</label>
             <textarea id="review" name="review" required></textarea>
             <label for="rating">Rating:</label>
             <select id="rating" name="rating" required>
-                <option><img src="images/favicons/ore-icon.ico"> 1</option>
-                <option><img src="images/favicons/garnet.ico"> 2</option>
-                <option><img src="images/favicons/sapphire.ico"> 3</option>
-                <option><img src="images/favicons/emerald-icon.ico"> 4</option>
-                <option><img src="images/favicons/diamond-icon.ico"> 5</option>
+                <option>1­ ✧</option>
+                <option>2 ✧</option>
+                <option>3 ✧</option>
+                <option>4 ✧</option>
+                <option>5 ✧</option>
             </select>
             <button type="submit">Submit Review</button>
         </form>
@@ -44,8 +44,7 @@
     <footer>
         <p>© 2025 HBnB - All rights reserved.</p>
     </footer>
-    <script src="login-form.js"></script>
-    <script src="review-form.js"></script>
+    <script type='module' src="js/add-review.js"></script>
 </body>
 
 </html>
