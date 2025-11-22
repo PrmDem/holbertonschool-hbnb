@@ -36,6 +36,7 @@ function displayPlaces(places) {
             <h2>${place.title}</h2>
             <img src=${place.picture}>
             <p class="location">${place.location}</p>
+            <p class="latitude hidden">lat: ${place.latitude}</p>
             <p class="price"><span>Price per night:</span> ${place.price} gil</p>
             <button id="details-button"><a href="place.html?q=${place.id}">View Details</a></button>
         `;
@@ -46,7 +47,7 @@ function displayPlaces(places) {
 // ---------- SETTING FILTERS BY PRICE AND CONTINENT ----------
 
 const priceFilter = document.getElementById('price-filter');
-const priceOptions = ['All', 50, 100, 500];
+const priceOptions = ['All', 100, 250, 500];
 
 priceOptions.forEach(value => { // Populates price filter options
   const oneOption = document.createElement('option');
@@ -56,14 +57,6 @@ priceOptions.forEach(value => { // Populates price filter options
 });
 
 const localFilter = document.getElementById('local-filter');
-const worldOptions = ['All', 'Mist continent', 'Outer continent', 'Terra'];
-
-worldOptions.forEach(value => { // Populates world filter options
-  const oneOption = document.createElement('option');
-  oneOption.value = value;
-  oneOption.textContent = value;
-  localFilter.appendChild(oneOption);
-});
 
 // Filters by price *and* continent
 function filterAll() {
@@ -74,16 +67,14 @@ function filterAll() {
   places.forEach(place => {
     const priceLine = place.querySelector('.price');
     const onlyFloat = parseFloat(priceLine.textContent.replace(/\D/g, '')); // Selecting the float part of price line
-    const localLine = place.querySelector('.location');
-    const locatedAt = localLine.textContent; // location of the place
+    const latLine = place.querySelector('.latitude');
+    const locatedAt = parseFloat(latLine.textContent.replace(/\D/g, '')); // location of the place
 
-    if (maxPrice === 'All' || onlyFloat <= parseFloat(maxPrice)) {
+    let priceMatch = (maxPrice === 'All' || onlyFloat <= parseFloat(maxPrice));
+    let latMatch = (where === 'All' || locatedAt === parseFloat(where));
+
+    if (priceMatch && latMatch) {
       place.style.display = 'block';
-      if (where === 'All' || locatedAt === where) {
-        place.style.display = 'block';
-      } else {
-        place.style.display = 'none';
-      }
     } else {
       place.style.display = 'none';
     }
