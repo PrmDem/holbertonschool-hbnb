@@ -1,0 +1,188 @@
+@font-face {
+    font-family: Alexandria;
+    src: url('fonts/Alexandria.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: MontBlanc-SB;
+    src: url('fonts/MontBlanc-SemiBold.ttf') format('truetype');
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Alexandria", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0 0;
+    font-weight: 200;
+    color: #ece9e9;
+    background-image: url('images/backgrounds/papercard-bg.jpg');
+    line-height: 1.5;
+    text-shadow: 2px 2px 1px black;
+}
+
+a:link {
+    text-decoration: none;
+    font-family: "Alexandria";
+    color: #eeeeee;
+    text-shadow: 2px 2px 1px #17202A;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: 4px 4px 2px #000000;
+    font-size: 90%;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+a:visited {
+    color: #eeeeee;
+}
+
+.hidden {
+    display: none;
+}
+
+header {
+    display: flex;
+    position: relative;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    justify-content: flex-start;
+    overflow: hidden;
+    height: 200px;
+    width: 100%;
+    padding-left: 125px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #ece9e9;
+    z-index: 2;
+}
+
+#logo img {
+    display: block;
+    height: 165px;
+    width: auto;
+    opacity: 0.7;
+}
+
+.website-name {
+    margin-left: 0;
+    margin-right: 125px;
+    text-shadow: 0 1px 0 #17202A,
+        2px 2px 0 #17202A,
+        2px 5px 0 #17202A;
+}
+
+.website-name h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    font-size: 350%;
+}
+
+.website-name h2 {
+    margin-top: 0;
+    color: #c8c8c8;
+}
+
+header button {
+    display: block;
+    width: 110px;
+    height: 50px;
+    margin: auto 50px;
+    color: #fff;
+    background-color: #4c4c4c;
+    border: 3px solid #C0C1C3;
+    border-style: ridge;
+    border-radius: 7px;
+}
+
+header a {
+    font-size: 130%;
+}
+
+header a:hover {
+    color: #333;
+    padding: 2px 3px;
+}
+
+#review-where {
+    margin: 55px;
+    font-size: 28px;
+    text-align: center;
+    text-shadow: 0 1px 0 #17202A,
+        2px 2px 0 #17202A,
+        2px 5px 0 #17202A;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 580px;
+    min-height: 400px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    padding: 30px 20px;
+    font-size: 110%;
+    text-align: center;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#review {
+    width: 450px;
+    min-height: 150px;
+    margin: 25px auto;
+    border: 5px solid #d8d8d8cb;
+    border: 3px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#rating {
+    display: inline-flex;
+    max-width: 450px;
+    margin: 10px auto 15px;
+}
+
+button {
+    display: block;
+    align-content: space-around;
+    width: 150px;
+    height: 35px;
+    margin: 40px auto 60px;
+    border: 3px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+form img {
+    margin-top: -9.5rem;
+    margin-left: 18.5rem;
+}
+
+footer {
+    position: relative;
+    bottom: 0px;
+    height: 90px;
+    padding: 1rem 0 0;
+    background-image: url("images/backgrounds/top-border-bg.png");
+    background-color: #4c4c4c;
+}
+
+footer p {
+    font-family: "Alexandria", serif;
+    text-align: center;
+    color: #ece9e9;
+}

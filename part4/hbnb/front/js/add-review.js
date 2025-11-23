@@ -23,6 +23,7 @@ async function fetchPlaceDetails(token, placeId) {
   }
 }
 
+
 // ---------- SENDS REVIEW DATA ----------
 async function submitReview(token, placeId, reviewData) {
   const response = await fetch('http://127.0.0.1:5000/api/v1/reviews/', {
@@ -33,7 +34,6 @@ async function submitReview(token, placeId, reviewData) {
     },
     body: JSON.stringify({ text: reviewData.text, rating: reviewData.rating, place_id: placeId }) // Send placeId and reviewText in the request body
   });
-  console.log(response);
   handleResponse(response);
 }
 function handleResponse(response, placeId) {

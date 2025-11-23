@@ -5,29 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Review</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="add_review.css">
 </head>
 
 <body>
     <header>
-        <div class="container" id="headerCont">
-            <div class="logo">
-                <img src="images/logo.png" alt="HBnB logo">
-            </div>
-            <!-- Navbar -->
-            <div class="nav-bar">
-                <ul class="nav-links">
-                    <li id="home-link"><a href="index.html">Home</a></li>
-                    <li id="login-link"><a href="login.html">Login</a></li>
-                    <li id="res-link"><a href="credits.html">Credits</a></li>
-                </ul>
-            </div>
+        <img src="images/stiltzkin-logo.png" alt="HBnB logo" id="logo">
+        <div class="website-name">
+            <h1>CouBnB</h1>
+            <h2>it sure beats a tent, kupo!</h2>
         </div>
+        <button class="nav-link" type="button"><a href="index.html">Home</a></button>
+        <button class="nav-link" type="button"><a href="about.html">About</a></button>
+        <button class="nav-link" type="button" id="login-link"><a href="login.html">Login</a></button>
+        <button class="nav-link" type="button"><a href="credits.html">Credits</a></button>
     </header>
     <main>
-        <!-- Add something to identify the place you're reviewing -->
+        <!-- displays place's title and owner's first name -->
+        <h2 id="review-where"></h2>
         <form id="review-form">
-            <h2 id="review-where"></h2>
             <label for="review">Your Review:</label>
             <textarea id="review" name="review" required></textarea>
             <label for="rating">Rating:</label>
@@ -39,6 +35,7 @@
                 <option>5 ✧</option>
             </select>
             <button type="submit">Submit Review</button>
+            <img src="images/saving.png" width="175px">
         </form>
     </main>
     <footer>
