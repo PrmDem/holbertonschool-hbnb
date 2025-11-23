@@ -1,8 +1,30 @@
 import { checkAuthentication } from './checkauth.js';
 
+// ---------- FETCHES PLACE INFO TO DISPLAY ABOVE REVIEW FORM ----------
+
+async function fetchPlaceDetails(token, placeId) {
+  try {
+    const placeUrl = `http://127.0.0.1:5000/api/v1/places/${placeId}`;
+    const response = await fetch(placeUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    });
+    if (!response.ok) {
+      window.alert('Something went wrong, kupo :(' + response.statusText);
+      return;
+    }
+    const data = await response.json();
+    return (data);
+  } catch (error) {
+    window.alert('Error' + error.message);
+  }
+}
+
 // ---------- SENDS REVIEW DATA ----------
 async function submitReview(token, placeId, reviewData) {
-  console.log(placeId, token, reviewData);
   const response = await fetch('http://127.0.0.1:5000/api/v1/reviews/', {
     method: 'POST',
     headers: {
@@ -14,9 +36,10 @@ async function submitReview(token, placeId, reviewData) {
   console.log(response);
   handleResponse(response);
 }
-function handleResponse(response) {
+function handleResponse(response, placeId) {
   if (response.ok) {
     window.alert('Review submitted successfully!');
+    window.location.href = placeId;
   } else if (response.status === 401) {
     window.alert('Authentication required. Please log back in, stat.');
     window.location.href = 'http://localhost:5501/part4/hbnb/front/login.html';
@@ -25,9 +48,10 @@ function handleResponse(response) {
   }
 }
 
+
 // ---------- ON PAGE LOAD ----------
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const token = checkAuthentication();
   if (!token) {
     console.error('Authentication token is missing or empty');
@@ -36,11 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const params = new URLSearchParams(window.location.search);
   const placeID = params.get('q');
-  const reviewForm = document.getElementById('review-form');
+  const placeData = await fetchPlaceDetails(token, placeID);
+  const whereTo = document.getElementById('review-where');
+  whereTo.textContent = `You are reviewing ${placeData.owner.first_name}'s ${placeData.title}`;
 
+  const reviewForm = document.getElementById('review-form');
   if (reviewForm) {
     reviewForm.addEventListener('submit', async (event) => {
       event.preventDefault();
+
       const reviewData = {
         text: document.getElementById('review').value,
         rating: parseInt(document.getElementById('rating').value)
