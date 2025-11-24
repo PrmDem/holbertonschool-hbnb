@@ -33,16 +33,20 @@ function displayPlaceDetails(place) {
   secPlace.innerHTML = `
           <h2>${place.title}</h2>
           <img src=${place.picture}>
-          <p class="location">Located in ${place.location}</p>
+          <p class="location">Enjoy ${place.owner.first_name}'s gorgeous space in ${place.location}!</p>
           <p class="description">${place.description}</p>
-          <p class="price"><span>Price:</span> ${place.price} gil</p>
+          <p class="price"><span>Price per night:</span> ${place.price} gil</p>
+          <h3>Included in the price:</h3>
         `;
 
-  const amenityList = document.createElement('div');
+  const amenityList = document.createElement('ul');
   amenityList.classList.add('amenities');
-  amenityList.innerHTML = "<h3>Included in the price:</h3>"
+  amenityList.innerHTML = '';
+
   place.amenities.forEach(amenity => {
-    amenityList.innerHTML += `<span>${amenity.name}</span><br/>`;
+    const oneAm = document.createElement('li');
+    oneAm.textContent = `${amenity.name}`;
+    amenityList.appendChild(oneAm);
   });
 
   secPlace.appendChild(amenityList);
@@ -51,12 +55,9 @@ function displayPlaceDetails(place) {
   const reviewList = place.reviews;
   if (!reviewList || reviewList.length === 0) {
     const sectionR = document.getElementById('reviews-list');
-    const noRevs = document.createElement('div');
+    const noRevs = document.createElement('li');
     noRevs.classList.add('no-reviews');
-    noRevs.innerHTML = `
-    <img src="images/review-card.png">
-    <p>There are no reviews for this place yet!</p>
-    `;
+    noRevs.innerHTML = "<p>There are no reviews for this place yet!</p>";
     sectionR.appendChild(noRevs);
   } else {
     displayReviews(reviewList);

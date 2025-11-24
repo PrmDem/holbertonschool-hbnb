@@ -338,8 +338,9 @@ h3 {
     padding: 1rem;
 }
 
-.amenities span {
-    margin-bottom: 180px;
+.amenities {
+    margin-bottom: 30px;
+    list-style-type: none;
 }
 
 /* ------- REVIEW(S) SECTION ------- */
@@ -377,6 +378,7 @@ h3 {
     background: transparent;
 }
 
+.no-reviews,
 .review {
     flex: 0 0 100%;
     scroll-snap-align: center;
@@ -405,18 +407,19 @@ h3 {
 
 .no-reviews p {
     position: relative;
-    max-width: 375px;
-    top: 175px;
-    left: 150px;
+    width: 380px;
+    height: 200px;
+    margin: 175px auto;
     color: #2a2828;
     text-shadow: none;
 }
 
 .review-body {
-    position: relative;
-    max-width: 380px;
-    max-height: 350px;
-    margin: 30px auto;
+    position: flex;
+    overflow-y: auto;
+    width: 380px;
+    height: 200px;
+    margin: 25px auto;
     color: #2a2828;
     text-shadow: none;
 }
