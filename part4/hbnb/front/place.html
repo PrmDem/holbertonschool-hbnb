@@ -5,31 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Place Details</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="place-details.css">
 </head>
 
 <body>
     <header>
-        <div class="container" id="headerCont">
-            <div class="logo">
-                <a href="#">
-                    <img src="images/logo.png" alt="HBnB logo">
-                </a>
-            </div>
-            <!-- Navbar -->
-            <div class="nav-bar">
-                <ul class="nav-links">
-                    <li id="home-link"><a href="index.html">Home</a></li>
-                    <li id="login-link"><a href="login.html">Login</a></li>
-                    <li id="res-link"><a href="credits.html">Credits</a></li>
-                </ul>
-            </div>
+        <img src="images/stiltzkin-logo.png" alt="HBnB logo" id="logo">
+        <div class="website-name">
+            <h1>CouBnB</h1>
+            <h2>it sure beats a tent, kupo!</h2>
         </div>
+        <button class="nav-link" type="button"><a href="index.html">Home</a></button>
+        <button class="nav-link" type="button"><a href="about.html">About</a></button>
+        <button class="nav-link" type="button" id="login-link"><a href="login.html">Login</a></button>
+        <button class="nav-link" type="button" id="logout-link"><a href="index.html">Logout</a></button>
+        <button class="nav-link" type="button"><a href="credits.html">Credits</a></button>
     </header>
     <main>
-        <section id="place-details">
+        <article id="place-details">
             <!-- Place details will be populated dynamically -->
-        </section>
+        </article>
         <section id="reviews">
             <!-- Reviews will be populated dynamically -->
         </section>
