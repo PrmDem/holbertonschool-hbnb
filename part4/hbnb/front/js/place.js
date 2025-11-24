@@ -30,33 +30,33 @@ function displayPlaceDetails(place) {
   const secPlace = document.getElementById('place-details');
   secPlace.innerHTML = ''; // Empties place section, clearing previously checked place
 
-  const deets = document.createElement('article');
-  deets.classList.add('detailed-card');
-  deets.innerHTML = `
+  secPlace.innerHTML = `
           <h2>${place.title}</h2>
           <img src=${place.picture}>
-          <p class="location">${place.location}</p>
+          <p class="location">Located in ${place.location}</p>
           <p class="description">${place.description}</p>
-          <p class="price"><span>Price per night:</span> ${place.price} gil</p>
+          <p class="price"><span>Price:</span> ${place.price} gil</p>
         `;
 
-  secPlace.appendChild(deets);
-
-  const ameniText = document.createElement('p');
-  ameniText.classList.add('amenities');
+  const amenityList = document.createElement('div');
+  amenityList.classList.add('amenities');
+  amenityList.innerHTML = "<h3>Included in the price:</h3>"
   place.amenities.forEach(amenity => {
-    ameniText.textContent += `${amenity.name} `;
+    amenityList.innerHTML += `<span>${amenity.name}</span><br/>`;
   });
 
-  deets.appendChild(ameniText);
+  secPlace.appendChild(amenityList);
 
   // checks whether there are reviews or not
   const reviewList = place.reviews;
   if (!reviewList || reviewList.length === 0) {
-    const sectionR = document.getElementById('reviews');
-    const noRevs = document.createElement('p');
+    const sectionR = document.getElementById('reviews-list');
+    const noRevs = document.createElement('div');
     noRevs.classList.add('no-reviews');
-    noRevs.textContent = 'There are no reviews for this place yet!';
+    noRevs.innerHTML = `
+    <img src="images/review-card.png">
+    <p>There are no reviews for this place yet!</p>
+    `;
     sectionR.appendChild(noRevs);
   } else {
     displayReviews(reviewList);
@@ -66,22 +66,17 @@ function displayPlaceDetails(place) {
 // ---------- FUNCTION TO DISPLAY EXISTING REVIEWS ----------
 
 async function displayReviews(allReviews) {
-  console.log(allReviews);
-  const revSection = document.getElementById('reviews');
-  if (!revSection) {
-    console.log('section reviews not found');
-    return; // Exit if the section isn't found
-  }
+  const revSection = document.getElementById('reviews-list');
   revSection.innerHTML = ''; // clear past loaded reviews
 
   allReviews.forEach(rev => {
-    const revContents = document.createElement('article'); // create new reviews space
+    const revContents = document.createElement('li'); // create new reviews space
     revContents.classList.add('review');
     revContents.innerHTML = `
-    <p id="rating">${rev.rating}</p>
-    <blockquote class="review-body">${rev.text}<br/><br/>
-    <cite class="reviewer">${rev.user.first_name}</cite>
-    </blockquote>
+        <p id="rating">${rev.rating} <img src="images/icons/${rev.rating}.ico"></p>
+        <blockquote class="review-body">${rev.text}<br/><br/>
+        <cite class="reviewer">${rev.user.first_name}</cite>
+        </blockquote>
     `;
     revSection.appendChild(revContents);
   });

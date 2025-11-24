@@ -35,9 +35,11 @@ function displayPlaces(places) {
     art.innerHTML = `
             <h2>${place.title}</h2>
             <img src=${place.picture}>
-            <p class="location">${place.location}</p>
             <p class="latitude hidden">lat: ${place.latitude}</p>
-            <p class="price"><span>Price per night:</span> ${place.price} gil</p>
+            <p class="location"><img src="images/icons/chocobo.ico" id="place-icon"> ${place.location}
+            <span> • </span>
+            <span class="price">${place.price} gil</span>
+            </p>
             <button id="details-button"><a href="place.html?q=${place.id}">View Details</a></button>
         `;
     placesList.appendChild(art);
@@ -85,6 +87,12 @@ function filterAll() {
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = checkAuthentication();
+
+  const message = document.getElementById('needLog'); // Message telling the user to log in
+  const filters = document.getElementById('filters'); // Filters for places, only appears if they do too
+  filters.style.display = 'block';
+  message.style.display = 'none';
+
   fetchPlaces(token);
 
   priceFilter.addEventListener('change', filterAll);

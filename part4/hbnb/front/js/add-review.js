@@ -34,15 +34,19 @@ async function submitReview(token, placeId, reviewData) {
     },
     body: JSON.stringify({ text: reviewData.text, rating: reviewData.rating, place_id: placeId }) // Send placeId and reviewText in the request body
   });
-  handleResponse(response);
+  handleResponse(response, placeId);
 }
+
 function handleResponse(response, placeId) {
-  if (response.ok) {
+  if (response.ok) { // Validation msg + redirect to reviewed place
     window.alert('Review submitted successfully!');
-    window.location.href = placeId;
-  } else if (response.status === 401) {
+    window.location.href = `http://localhost:5501/part4/hbnb/front/place.html?q=${placeId}`;
+  } else if (response.status === 401) { // Specific login error msg + redirect to login form
     window.alert('Authentication required. Please log back in, stat.');
     window.location.href = 'http://localhost:5501/part4/hbnb/front/login.html';
+  } else if (response.status === 400) { // Specific error message + redirect to reviewed place
+    window.alert('You have already reviewed this place, kupo!');
+    window.location.href = `http://localhost:5501/part4/hbnb/front/place.html?q=${placeId}`;
   } else {
     window.alert('Failed to submit review');
   }
@@ -71,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const reviewData = {
         text: document.getElementById('review').value,
-        rating: parseInt(document.getElementById('rating').value)
+        rating: parseInt(document.getElementById('pick-rating').value)
       }
       submitReview(token, placeID, reviewData);
     });

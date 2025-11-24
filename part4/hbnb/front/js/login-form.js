@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ email, password })
       });
-      console.log(response);
       if (!response.ok) {
         window.alert('Login failed, kupo!' + response.statusText);
       } else {
