@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Review</title>
-    <link rel="stylesheet" href="add_review.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -16,7 +16,6 @@
             <h2>it sure beats a tent, kupo!</h2>
         </div>
         <button class="nav-link" type="button"><a href="index.html">Home</a></button>
-        <button class="nav-link" type="button"><a href="about.html">About</a></button>
         <button class="nav-link" type="button" id="login-link"><a href="login.html">Login</a></button>
         <button class="nav-link" type="button" id="logout-link"><a href="index.html">Logout</a></button>
         <button class="nav-link" type="button"><a href="credits.html">Credits</a></button>
@@ -27,13 +26,13 @@
         <form id="review-form">
             <label for="review">Your Review:</label>
             <textarea id="review" name="review" required></textarea>
-            <label for="rating">Rating:</label>
-            <select id="rating" name="rating" required>
-                <option label="1­ ✧">ore</option>
-                <option label="2­ ✧">garnet</option>
-                <option label="3­ ✧">sapphire</option>
-                <option label="4­ ✧">emerald</option>
-                <option label="5­ ✧">diamond</option>
+            <label for="pick-rating">Rating:</label>
+            <select id="pick-rating" name="rating" required>
+                <option label="1­ ✧">1</option>
+                <option label="2­ ✧">2</option>
+                <option label="3­ ✧">3</option>
+                <option label="4­ ✧">4</option>
+                <option label="5­ ✧">5</option>
             </select>
             <button type="submit">Submit Review</button>
             <img src="images/saving.png" width="175px">

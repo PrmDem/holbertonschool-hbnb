@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to CouBnB !</title>
-    <link rel="stylesheet" href="clear-style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -17,15 +17,14 @@
             <h2>it sure beats a tent, kupo!</h2>
         </div>
         <button class="nav-link" type="button"><a href="index.html">Home</a></button>
-        <button class="nav-link" type="button"><a href="about.html">About</a></button>
         <button class="nav-link" type="button" id="login-link"><a href="login.html">Login</a></button>
-        <button class="nav-link" type="button" id="logout-link"><a href="index.html">Logout</a></button>
+        <button class="nav-link hidden" type="button" id="logout-link"><a href="index.html">Logout</a></button>
         <button class="nav-link" type="button"><a href="credits.html">Credits</a></button>
     </header>
     <main>
         <section id="filter">
             <h2>Find your dream place</h2>
-            <div id="filters">
+            <div class="hidden" id="filters">
                 <label for="price-filter">Max Price:</label>
                 <select id="price-filter">
                     <!-- Options will be populated dynamically -->
@@ -40,7 +39,14 @@
                 </select>
             </div>
         </section>
-        <section id="places-list"></section>
+        <article class="noPlace hidden" id="needLog">
+            <img src="images/review-card.png">
+            <blockquote class="none-msg">
+                You need to log in to see the goods, kupo!
+            </blockquote>
+        </article>
+        <section id="places-list">
+        </section>
     </main>
     <footer>
         <p>© 2025 HBnB - All rights reserved.</p>
