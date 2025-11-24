@@ -1,11 +1,8 @@
+/* ----- ADDING SPECIFIC FONTS ----- */
+
 @font-face {
     font-family: Alexandria;
     src: url('fonts/Alexandria.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: Garet;
-    src: url('fonts/Garet-Book.ttf') format('truetype');
 }
 
 @font-face {
@@ -13,9 +10,11 @@
     src: url('fonts/MontBlanc-SemiBold.ttf') format('truetype');
 }
 
+/* ---------- GENERAL STYLING ---------- */
+
 * {
     box-sizing: border-box;
-    font-family: "Garet", Arial, sans-serif;
+    font-family: "Alexandria", "MontBlanc-SB", Arial, sans-serif;
 }
 
 html {
@@ -23,179 +22,315 @@ html {
 }
 
 body {
-    background-color: #e6e5e5ea;
+    margin: 0 0;
     font-weight: 200;
-    color: #333;
+    color: #ece9e9;
+    background-image: url('images/backgrounds/papercard-bg.jpg');
     line-height: 1.5;
+    text-shadow: 2px 2px 1px black;
 }
 
-:is(h1, h2, h3) {
-    font-family: "Alexandria", "Helvetica", sans-serif;
-    text-align: center;
-}
-
-a:any-link {
+a:link {
     text-decoration: none;
-    font-family: "MontBlanc-SB";
-    color: #333;
+    font-family: "Alexandria";
+    color: #eeeeee;
+    text-shadow: 2px 2px 1px #17202A;
 }
 
 a:hover {
-    text-decoration: underline dotted 1px darkolivegreen;
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: 4px 4px 2px #000000;
+    font-size: 90%;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 a:visited {
-    color: darkgrey;
-}
-
-header {
-    background-color: #4c4c4c;
-    color: #fff;
-    padding: 0.5rem;
-}
-
-#headerCont {
-    width: inherit;
-    display: flex;
-    flex-flow: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.container {
-    width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.logo {
-    width: fit-content;
-}
-
-.logo img {
-    height: 75px;
-}
-
-.nav-bar {
-    position: sticky;
-    width: fit-content;
-}
-
-.nav-links li {
-    list-style: none;
-    display: inline-flex;
-    flex-wrap: wrap-reverse;
-    position: relative;
-}
-
-.nav-links a {
-    color: #fff;
-    font-family: "Alexandria", serif;
-    font-size: 110%;
-    text-decoration: none;
-    margin: 10px;
-    padding: 1;
-}
-
-nav a:hover {
-    background-color: rgb(181, 183, 177);
-    color: #333;
-    padding: 2px 3px;
+    color: #eeeeee;
 }
 
 .hidden {
     display: none;
 }
 
-main {
-    padding: 2rem;
+/* ---------- HEADER & ITS CONTENTS ---------- */
+
+header {
+    display: flex;
+    position: relative;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    justify-content: flex-start;
+    overflow: hidden;
+    height: 200px;
+    width: 100%;
+    padding-left: 125px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #ece9e9;
+    z-index: 2;
 }
+
+#logo img {
+    display: block;
+    height: 165px;
+    width: auto;
+    opacity: 0.7;
+}
+
+.website-name {
+    margin-left: 0;
+    margin-right: 125px;
+    text-shadow: 0 1px 0 #17202A,
+        2px 2px 0 #17202A,
+        2px 5px 0 #17202A;
+}
+
+.website-name h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    font-size: 350%;
+}
+
+.website-name h2 {
+    margin-top: 0;
+    color: #c8c8c8;
+}
+
+header button {
+    display: block;
+    width: 100px;
+    height: 60px;
+    margin: auto 50px;
+    color: #fff;
+    background-color: #4c4c4c;
+    border: 3px solid #C0C1C3;
+    border-style: ridge;
+    border-radius: 7px;
+}
+
+header a {
+    font-size: 130%;
+}
+
+header a:hover {
+    color: #333;
+    padding: 2px 3px;
+}
+
+/* ---------- BODY ELEMENTS START HERE ---------- */
 
 section {
-    padding: 1rem 0 0 5rem;
+    width: fit-content;
+    padding: auto;
 }
 
+
+/* ----- ASKING TO LOG IN ----- */
+
+#needLog img {
+    display: block;
+}
+
+#needLog {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+#needLog blockquote {
+    position: absolute;
+    max-width: 350px;
+    top: 70%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 110%;
+    color: #2a2828;
+    text-shadow: none;
+}
+
+
+/* ---------- LOGIN FORM ---------- */
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    width: 520px;
+    min-height: 380px;
+    height: fit-content;
+    margin: 80px auto 80px;
+    padding: 30px 20px;
+    font-size: 110%;
+    text-align: center;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#email,
+#password {
+    width: 410px;
+    min-height: 50px;
+    margin: 25px auto;
+    border: 5px solid #d8d8d8cb;
+    border: 3px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+    font-family: Arial;
+}
+
+#login-form button {
+    display: block;
+    align-content: space-around;
+    width: 150px;
+    height: 35px;
+    margin: 60px auto 60px;
+    border: 3px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+    font-size: 90%;
+}
+
+#login-form img {
+    margin-top: -9.5rem;
+    margin-left: 16.5rem;
+}
+
+/* ---------- FILTERS ---------- */
+
 #filter {
-    margin: 1rem 2rem 2rem;
+    display: block;
+    margin: 50px auto;
+    padding: 30px 40px;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
     font-size: 16px;
     text-align: center;
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
 }
 
 #filter h2 {
-    /* ajouter aussi pour section id reviews */
-    font-size: 25px;
+    margin: 0 0 20px;
+    color: #ece9e9;
+    font-size: 35px;
+    text-shadow: 0 1px 0 #17202A,
+        2px 2px 0 #17202A,
+        2px 5px 0 #17202A;
 }
 
 #price-filter {
-    margin-right: 1.5rem;
+    margin-right: 25px;
 }
 
-.review-card {
-    float: auto;
-    width: fit-content;
-}
+
+/* ---------- GRID OF AVAILABLE PLACES ---------- */
 
 #places-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    left: auto;
-    right: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-evenly;
+    margin-right: auto;
+    margin-bottom: 50px;
+    margin-left: auto;
 }
 
 .place-card {
+    display: block;
     width: 310px;
     height: fit-content;
-    margin-left: 1rem;
+    margin: 1rem;
+    padding: 10px;
+    color: #ececec;
+    text-align: center;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
 }
 
-.review-card,
-.place-card,
-.detailed-card {
-    display: block;
-    justify-content: space-evenly;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: rgb(239, 239, 239);
+.place-card .location {
+    margin-bottom: 0;
+    font-size: 110%;
+    color: #ece9e9;
 }
 
 .place-card img {
-    width: 287px;
+    width: 280px;
     border-radius: 5%;
 }
 
-.place-card .price {
-    text-align: center;
-    font-size: 15px;
+.place-card #place-icon {
+    vertical-align: middle;
+    display: inline-block;
+    width: 32px;
 }
 
-.place-card span,
-.detailed-card span {
-    font-family: "MontBlanc-SB";
+.price {
+    margin-top: 10;
 }
 
 #details-button {
-    background-color: #4c4c4c;
+    display: inline-block;
+    width: 120px;
+    height: 35px;
+    margin-bottom: 15px;
+    padding-bottom: 6px;
     color: #fff;
-    border: none;
-    width: 100px;
-    padding: 5px;
-    margin: 1% 33.33% 5%;
+    font-size: 14px;
+    text-align: center;
+    background-color: #4c4c4c;
+    border: 3px solid #C0C1C3;
+    border-radius: 7px;
+    border-style: ridge;
     cursor: pointer;
 }
 
-.detailed-card {
-    width: 620px;
+
+/* ---------- DETAILED PLACE DISPLAY ---------- */
+
+#add-review,
+#place-details {
+    display: block;
+    width: 680px;
+    height: fit-content;
+    padding: 10px;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#place-details {
+    margin: 50px auto 0;
+}
+
+#add-review {
+    margin: 0 auto 50px;
+}
+
+#place-details h2 {
+    font-family: "Alexandria", sans-serif;
+    text-align: center;
+}
+
+#place-details p,
+h3 {
+    max-width: 620px;
     margin-left: auto;
     margin-right: auto;
+    text-align: justify;
+    text-shadow: 2px 2px 1px black;
 }
 
-.detailed-card h2 {
-    font-family: "Alexandria", sans-serif;
-}
-
-.detailed-card img {
+#place-details img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -203,38 +338,205 @@ section {
     padding: 1rem;
 }
 
-#reviews {
-    position: relative;
-    margin-left: 30%;
+.amenities span {
+    margin-bottom: 180px;
 }
 
-#thanks {
-    display: block;
+/* ------- REVIEW(S) SECTION ------- */
+
+#reviews-list {
+    display: flex;
+    gap: 2vw;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    width: 680px;
+    height: 460px;
+    margin: 10px auto;
+    padding: 18px 40px;
+    text-align: center;
+    color: #2a2828;
+    list-style: none;
+    background-image: url('images/backgrounds/ff9-menu-bg.jpg');
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#reviews-list::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+}
+
+#reviews-list::-webkit-scrollbar-thumb {
+    background: rgb(230, 230, 230);
+    border-radius: 10px;
+}
+
+#reviews-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.review {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    width: 552px;
+    height: 401px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(images/review-card.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#rating {
+    position: relative;
+    margin-top: 12%;
+    margin-bottom: 0;
+    text-align: center;
+    color: #2a2828;
+    text-shadow: none;
+}
+
+#rating img {
+    width: 20px;
+    margin-bottom: -3px;
+}
+
+.no-reviews p {
+    position: relative;
+    max-width: 375px;
+    top: 175px;
+    left: 150px;
+    color: #2a2828;
+    text-shadow: none;
+}
+
+.review-body {
+    position: relative;
+    max-width: 380px;
+    max-height: 350px;
+    margin: 30px auto;
+    color: #2a2828;
+    text-shadow: none;
+}
+
+#add-review {
+    height: 150px;
     text-align: center;
 }
 
+
+/* ---------- REVIEW FORM ---------- */
+
+#review-where {
+    margin: 55px;
+    font-size: 28px;
+    text-align: center;
+    text-shadow: 0 1px 0 #17202A,
+        2px 2px 0 #17202A,
+        2px 5px 0 #17202A;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 580px;
+    min-height: 400px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    padding: 30px 20px;
+    font-size: 110%;
+    text-align: center;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#review {
+    width: 450px;
+    min-height: 150px;
+    margin: 25px auto;
+    border: 5px solid #d8d8d8cb;
+    border: 3px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+    font-family: "Alexandria", "Montblanc-SB", Arial;
+    font-size: 14px;
+}
+
+#pick-rating {
+    display: inline-flex;
+    max-width: 450px;
+    margin: 10px auto 15px;
+}
+
+form button {
+    display: block;
+    align-content: space-around;
+    width: 150px;
+    height: 35px;
+    margin: 40px auto 60px;
+    border: 3px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+form img {
+    margin-top: -9.5rem;
+    margin-left: 18.5rem;
+}
+
+/* ---------- CREDITS PAGE ---------- */
+
+#thanks {
+    display: block;
+    margin: 60px auto;
+    padding-left: 50px;
+    width: 600px;
+    height: 550px;
+    background-image: url("images/backgrounds/ff9-og-bg.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
+#thanks h2 {
+    font-size: 32px;
+}
+
 #thanks h4 {
-    font-size: 21px;
-    margin-bottom: 25px;
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
-#thanks ul {
-    margin-bottom: 40px;
-}
-
-#res-list li {
+#thanks li {
     list-style: none;
-    margin-left: -40px;
+    margin-bottom: 5px;
+    margin-left: 35px;
 }
+
+#thanks img {
+    margin: 40px 180px 30px;
+}
+
+
+/* ---------- FOOTER ---------- */
 
 footer {
-    background-color: #4c4c4c;
+    position: relative;
+    bottom: 0px;
+    height: 90px;
     padding: 1rem 0 0;
+    background-image: url("images/backgrounds/top-border-bg.png");
+    background-color: #4c4c4c;
 }
 
 footer p {
     font-family: "Alexandria", serif;
     text-align: center;
-    color: #ddd;
-    padding-bottom: 2.5rem;
+    color: #ece9e9;
 }
