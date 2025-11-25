@@ -24,7 +24,7 @@ class Review(BaseModel):
     user_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
 
     place = relationship("Place", back_populates="reviews")
-    user = relationship("User", back_populates="reviews")
+    user = relationship("User", back_populates="reviews", overlaps="author")
 
     def __init__(self, text, rating, place_id, user_id):
         super().__init__()
@@ -32,6 +32,10 @@ class Review(BaseModel):
         self.rating = rating
         self.place_id = place_id
         self.user_id = user_id
+
+    @property
+    def username(self):
+        return self.user.first_name
 
     @validates("text")
     def validate_text(self, key, value):
