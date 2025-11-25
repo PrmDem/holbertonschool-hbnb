@@ -9,14 +9,12 @@ function checkAuthentication() { // Grabs and returns identifying token
   } else { // Display logout link only
     loginLink.style.display = 'none';
     logoutLink.style.display = 'block';
-  }
 
-  if (logoutLink) { // Force token expiry on click
     logoutLink.addEventListener('click', (event) => {
       event.preventDefault();
       document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      window.location.href = 'http://localhost:5501/part4/hbnb/front/index.html';
       logoutLink.style.display = 'none';
-      window.location.reload();
     });
   }
 

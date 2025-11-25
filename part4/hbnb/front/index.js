@@ -32,14 +32,13 @@ function displayPlaces(places) {
   places.forEach(place => {
     const art = document.createElement('article');
     art.classList.add('place-card');
+    art.classList.add('classic');
     art.innerHTML = `
             <h2>${place.title}</h2>
-            <img src=${place.picture}>
+            <img src="${place.picture}2.jpg">
             <p class="latitude hidden">lat: ${place.latitude}</p>
             <p class="location"><img src="images/icons/chocobo.ico" id="place-icon"> ${place.location}
-            <span> • </span>
-            <span class="price">${place.price} gil</span>
-            </p>
+            <span class="price">, ${place.price}G</span></p>
             <button id="details-button"><a href="place.html?q=${place.id}">View Details</a></button>
         `;
     placesList.appendChild(art);

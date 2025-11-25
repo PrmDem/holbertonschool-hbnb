@@ -25,13 +25,13 @@ body {
     margin: 0 0;
     font-weight: 200;
     color: #ece9e9;
-    background-image: url('images/backgrounds/papercard-bg.jpg');
+    background-image: url('images/backgrounds/lighter-bg.jpg');
     line-height: 1.5;
     text-shadow: 2px 2px 1px black;
 }
 
 a:link {
-    text-decoration: none;
+    text-decoration: underline 1px dotted #4066BF;
     font-family: "Alexandria";
     color: #eeeeee;
     text-shadow: 2px 2px 1px #17202A;
@@ -54,12 +54,16 @@ a:visited {
     display: none;
 }
 
+.classic {
+    background-image: url('images/backgrounds/dialog_bg_blue.png');
+}
+
 /* ---------- HEADER & ITS CONTENTS ---------- */
 
 header {
     display: flex;
     position: relative;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     justify-content: flex-start;
     overflow: hidden;
     height: 200px;
@@ -68,7 +72,8 @@ header {
     padding-top: 15px;
     padding-bottom: 15px;
     color: #ece9e9;
-    z-index: 2;
+    border-bottom: 5px solid #C0C1C3;
+    border-bottom-style: ridge;
 }
 
 #logo img {
@@ -104,7 +109,7 @@ header button {
     height: 60px;
     margin: auto 50px;
     color: #fff;
-    background-color: #4c4c4c;
+    background-color: #284078;
     border: 3px solid #C0C1C3;
     border-style: ridge;
     border-radius: 7px;
@@ -168,7 +173,7 @@ section {
     padding: 30px 20px;
     font-size: 110%;
     text-align: center;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     border: 5px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
@@ -183,7 +188,9 @@ section {
     border: 3px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
-    font-family: Arial;
+    font-family: Courier;
+    font-size: 18px;
+    text-align: center;
 }
 
 #login-form button {
@@ -209,7 +216,7 @@ section {
     display: block;
     margin: 50px auto;
     padding: 30px 40px;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     font-size: 16px;
     text-align: center;
     border: 5px solid #ddd;
@@ -244,13 +251,13 @@ section {
 
 .place-card {
     display: block;
-    width: 310px;
+    width: 320px;
     height: fit-content;
     margin: 1rem;
     padding: 10px;
     color: #ececec;
     text-align: center;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     border: 5px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
@@ -281,12 +288,13 @@ section {
     display: inline-block;
     width: 120px;
     height: 35px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     padding-bottom: 6px;
     color: #fff;
     font-size: 14px;
     text-align: center;
-    background-color: #4c4c4c;
+    background-color: #284078;
     border: 3px solid #C0C1C3;
     border-radius: 7px;
     border-style: ridge;
@@ -301,8 +309,8 @@ section {
     display: block;
     width: 680px;
     height: fit-content;
-    padding: 10px;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    padding: 15px;
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     border: 5px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
@@ -323,19 +331,47 @@ section {
 
 #place-details p,
 h3 {
-    max-width: 620px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 600px;
+    margin: 25px auto;
     text-align: justify;
     text-shadow: 2px 2px 1px black;
 }
 
-#place-details img {
-    width: 100%;
+.slideshow {
+    display: flex;
+    gap: 1vw;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    width: 620px;
+    height: 430px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slideshow img {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    width: fit-content;
     height: 100%;
     object-fit: contain;
-    border-radius: 8%;
     padding: 1rem;
+    border-radius: 70px;
+}
+
+.slideshow::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+}
+
+.slideshow::-webkit-scrollbar-thumb {
+    background: rgb(230, 230, 230);
+    border-radius: 10px;
+}
+
+.slideshow::-webkit-scrollbar-track {
+    background: #aeb0b5;
+    border-radius: 10px;
 }
 
 .amenities {
@@ -343,7 +379,8 @@ h3 {
     list-style-type: none;
 }
 
-/* ------- REVIEW(S) SECTION ------- */
+
+/* ------------ REVIEW(S) SECTION ------------ */
 
 #reviews-list {
     display: flex;
@@ -364,18 +401,22 @@ h3 {
     border-radius: 10px;
 }
 
+.review-body::-webkit-scrollbar,
 #reviews-list::-webkit-scrollbar {
     width: 5px;
     height: 10px;
 }
 
+.review-body::-webkit-scrollbar-thumb,
 #reviews-list::-webkit-scrollbar-thumb {
     background: rgb(230, 230, 230);
     border-radius: 10px;
 }
 
+.review-body::-webkit-scrollbar-track,
 #reviews-list::-webkit-scrollbar-track {
-    background: transparent;
+    background: #284078;
+    border-radius: 10px;
 }
 
 .no-reviews,
@@ -453,7 +494,7 @@ form {
     padding: 30px 20px;
     font-size: 110%;
     text-align: center;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     border: 5px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
@@ -467,7 +508,7 @@ form {
     border: 3px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
-    font-family: "Alexandria", "Montblanc-SB", Arial;
+    font-family: Courier;
     font-size: 14px;
 }
 
@@ -499,9 +540,9 @@ form img {
     display: block;
     margin: 60px auto;
     padding-left: 50px;
-    width: 600px;
+    width: 630px;
     height: 550px;
-    background-image: url("images/backgrounds/ff9-og-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     border: 5px solid #ddd;
     border-style: ridge;
     border-radius: 10px;
@@ -534,8 +575,10 @@ footer {
     bottom: 0px;
     height: 90px;
     padding: 1rem 0 0;
-    background-image: url("images/backgrounds/top-border-bg.png");
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
     background-color: #4c4c4c;
+    border-top: 5px solid #ddd;
+    border-top-style: ridge;
 }
 
 footer p {

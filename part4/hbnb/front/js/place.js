@@ -32,7 +32,12 @@ function displayPlaceDetails(place) {
 
   secPlace.innerHTML = `
           <h2>${place.title}</h2>
-          <img src=${place.picture}>
+          <div class="slideshow">
+            <img src="${place.picture}1.jpg">
+            <img src="${place.picture}2.jpg">
+            <img src="${place.picture}3.jpg">
+            <img src="${place.picture}4.jpg">
+          </div>
           <p class="location">Enjoy ${place.owner.first_name}'s gorgeous space in ${place.location}!</p>
           <p class="description">${place.description}</p>
           <p class="price"><span>Price per night:</span> ${place.price} gil</p>
