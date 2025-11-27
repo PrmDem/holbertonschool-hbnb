@@ -22,7 +22,7 @@ VALUES
 		'Admin',
 		'HBnB',
 		'admin@hbnb.io',
-		'$2a$08$GUdp86cgUvdk2NIjvj.gIeg6oQaPOZi0ueV5z0TEXW51ztrRAGRna',
+		'$2a$12$hqs4sQBLNsdX0vR69uwjh.1ChJ9YW3hRbd1JFpvDc5xiAlVELcZta',
 		1,
 		'36c9050e-ddd3-4c3b-9731-9f487208bbc1',
 		NULL,
