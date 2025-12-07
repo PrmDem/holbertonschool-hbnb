@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <img src="images/stiltzkin-logo.png" alt="HBnB logo" id="logo">
+        <div class="website-name">
+            <h1>CouBnB</h1>
+            <h2>it sure beats a tent, kupo!</h2>
+        </div>
+        <button class="nav-link" type="button"><a href="index.html">Home</a></button>
+        <button class="nav-link" type="button"><a href="credits.html">Credits</a></button>
+    </header>
+    <main>
+        <!-- displays place's title and owner's first name -->
+        <h2 id="create">Create a new account</h2>
+        <form id="register-form">
+            <label for="first-name">First name:</label>
+            <textarea id="first-name" name="first" required></textarea>
+            <label for="last-name">Last name:</label>
+            <textarea id="last-name" name="last" required></textarea>
+            <label for="email">Email:</label>
+            <textarea id="email" name="mail" required></textarea>
+            <label for="password">Password:</label>
+            <textarea id="password" name="pass" required></textarea>
+            <label for="verif">Verify password:</label>
+            <textarea id="verif" name="verif_pass" required></textarea>
+            <button type="submit">Create account</button>
+            <img src="images/saving.png" width="175px">
+        </form>
+    </main>
+    <footer>
+        <p>© 2025 HBnB - All rights reserved.</p>
+    </footer>
+    <script type='module' src="js/register.js"></script>
+</body>
+
+</html>

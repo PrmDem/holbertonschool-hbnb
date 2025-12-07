@@ -162,13 +162,26 @@ section {
 
 /* ---------- LOGIN FORM ---------- */
 
+#reg {
+    width: 580px;
+    height: 100px;
+    margin: 0 auto 30px;
+    padding: 10px 20px;
+    font-size: 110%;
+    text-align: center;
+    background-image: url("images/backgrounds/dialog_bg_blue.png");
+    border: 5px solid #ddd;
+    border-style: ridge;
+    border-radius: 10px;
+}
+
 #login-form {
     display: flex;
     flex-direction: column;
-    width: 520px;
+    width: 580px;
     min-height: 380px;
     height: fit-content;
-    margin: 80px auto 80px;
+    margin: 80px auto 20px;
     padding: 30px 20px;
     font-size: 110%;
     text-align: center;
@@ -178,8 +191,11 @@ section {
     border-radius: 10px;
 }
 
+#first-name,
+#last-name,
 #email,
-#password {
+#password,
+#verif {
     width: 410px;
     min-height: 50px;
     margin: 25px auto;
@@ -470,8 +486,9 @@ h3 {
 }
 
 
-/* ---------- REVIEW FORM ---------- */
+/* ---------- REVIEW & REGISTER FORMS ---------- */
 
+#create,
 #review-where {
     margin: 55px;
     font-size: 28px;
